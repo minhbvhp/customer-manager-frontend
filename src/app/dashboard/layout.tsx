@@ -33,17 +33,7 @@ export default function DashboardLayout({
 
   return (
     <Layout>
-      <Sider
-        breakpoint="xxl"
-        collapsedWidth="0"
-        style={{
-          //   height: "100vh",
-          position: "absolute",
-          left: 0,
-          top: 0,
-          bottom: 0,
-        }}
-      >
+      <Sider breakpoint="lg" collapsedWidth="0">
         <div style={{ textAlign: "center", margin: 10 }}>
           <FundFilled
             style={{
@@ -56,7 +46,7 @@ export default function DashboardLayout({
         </div>
         <Divider style={{ margin: 0 }} />
         <Menu
-          //   style={{ height: "100vh" }}
+          style={{ height: "100vh" }}
           mode="inline"
           defaultSelectedKeys={["4"]}
           items={items}
