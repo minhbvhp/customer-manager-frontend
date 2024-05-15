@@ -34,7 +34,7 @@ export default function DashboardLayout({
   return (
     <Layout>
       <Sider breakpoint="lg" collapsedWidth="0">
-        <div style={{ textAlign: "center", margin: 10 }}>
+        <div style={{ textAlign: "center", margin: 7 }}>
           <FundFilled
             style={{
               fontSize: "50px",
@@ -76,10 +76,11 @@ export default function DashboardLayout({
           </Space>
         </Header>
         <Divider style={{ margin: 0 }} />
-        <Content style={{ margin: "5rem" }}>
+
+        <Content style={{ margin: "2rem" }}>
           <div
             style={{
-              padding: 24,
+              padding: 20,
               minHeight: 360,
               background: colorBgContainer,
               borderRadius: borderRadiusLG,
