@@ -8,19 +8,25 @@ import {
   SettingOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu, Divider, Avatar, Space, theme } from "antd";
+import type { GetProp, MenuProps } from "antd";
 
 const { Header, Content, Footer, Sider } = Layout;
 
-const items = [
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
-  UserOutlined,
-].map((icon, index) => ({
-  key: String(index + 1),
-  icon: React.createElement(icon),
-  label: `Menu ${index + 1}`,
-}));
+type MenuItem = GetProp<MenuProps, "items">[number];
+
+const items: MenuItem[] = [
+  {
+    key: "customer_key_menu_item",
+    label: "Khách hàng",
+    icon: <UserOutlined />,
+    children: [
+      { key: "9", label: "Option 9" },
+      { key: "10", label: "Option 10" },
+      { key: "11", label: "Option 11" },
+      { key: "12", label: "Option 12" },
+    ],
+  },
+];
 
 export default function DashboardLayout({
   children,
@@ -45,12 +51,7 @@ export default function DashboardLayout({
           />
         </div>
         <Divider style={{ margin: 0 }} />
-        <Menu
-          style={{ height: "100vh" }}
-          mode="inline"
-          defaultSelectedKeys={["4"]}
-          items={items}
-        />
+        <Menu style={{ height: "100vh" }} mode="inline" items={items} />
       </Sider>
 
       <Layout>

@@ -22,17 +22,19 @@ export default function RootLayout({
           theme={{
             token: {
               // Seed Token
-              colorPrimary: "#FFBB70",
+              colorPrimary: "#94AF9F",
               padding: 0,
               margin: 0,
             },
             components: {
               Layout: {
-                siderBg: "#ED9455",
+                siderBg: "#94AF9F",
               },
 
               Menu: {
-                itemBg: "#ED9455",
+                itemBg: "#94AF9F",
+                itemSelectedBg: "#DBE4C6",
+                itemSelectedColor: "black",
               },
             },
           }}
