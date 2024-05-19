@@ -1,14 +1,9 @@
 "use client";
 import React from "react";
-import {
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-  FundFilled,
-  SettingOutlined,
-} from "@ant-design/icons";
-import { Layout, Menu, Divider, Avatar, Space, theme } from "antd";
+import { UserOutlined, FundFilled, SettingOutlined } from "@ant-design/icons";
+import { Layout, Menu, Divider, Avatar, Space, Flex, theme } from "antd";
 import type { GetProp, MenuProps } from "antd";
+import Link from "next/link";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -20,10 +15,10 @@ const items: MenuItem[] = [
     label: "Khách hàng",
     icon: <UserOutlined />,
     children: [
-      { key: "9", label: "Option 9" },
-      { key: "10", label: "Option 10" },
-      { key: "11", label: "Option 11" },
-      { key: "12", label: "Option 12" },
+      {
+        key: "customer_list_sub_menu_item",
+        label: <Link href="/dashboard/customer/list">Danh sách</Link>,
+      },
     ],
   },
 ];
@@ -38,7 +33,7 @@ export default function DashboardLayout({
   } = theme.useToken();
 
   return (
-    <Layout>
+    <Layout style={{ height: "100vh" }}>
       <Sider breakpoint="lg" collapsedWidth="0">
         <div style={{ textAlign: "center", margin: 7 }}>
           <FundFilled
@@ -51,13 +46,12 @@ export default function DashboardLayout({
           />
         </div>
         <Divider style={{ margin: 0 }} />
-        <Menu style={{ height: "100vh" }} mode="inline" items={items} />
+        <Menu mode="inline" items={items} />
       </Sider>
 
       <Layout>
         <Header
           style={{
-            padding: 0,
             background: colorBgContainer,
             direction: "rtl",
           }}
