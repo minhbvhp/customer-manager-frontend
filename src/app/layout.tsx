@@ -36,6 +36,7 @@ export default function RootLayout({
                 itemBg: "#153448",
                 itemHoverBg: "#3C5B6F",
                 itemSelectedBg: "#948979",
+                itemActiveBg: "#948979",
                 itemSelectedColor: "white",
                 iconSize: 20,
                 fontSize: 16,

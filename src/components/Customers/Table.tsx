@@ -6,92 +6,52 @@ import type { TableColumnsType, TableProps } from "antd";
 interface DataType {
   key: React.Key;
   name: string;
-  age: number;
+  taxCode: string;
   address: string;
 }
 
 const columns: TableColumnsType<DataType> = [
   {
-    title: "Name",
+    title: "Khách hàng",
     dataIndex: "name",
-    showSorterTooltip: { target: "full-header" },
-    filters: [
-      {
-        text: "Joe",
-        value: "Joe",
-      },
-      {
-        text: "Jim",
-        value: "Jim",
-      },
-      {
-        text: "Submenu",
-        value: "Submenu",
-        children: [
-          {
-            text: "Green",
-            value: "Green",
-          },
-          {
-            text: "Black",
-            value: "Black",
-          },
-        ],
-      },
-    ],
-    // specify the condition of filtering result
-    // here is that finding the name started with `value`
-    onFilter: (value, record) => record.name.indexOf(value as string) === 0,
-    sorter: (a, b) => a.name.length - b.name.length,
-    sortDirections: ["descend"],
   },
   {
-    title: "Age",
-    dataIndex: "age",
-    defaultSortOrder: "descend",
-    sorter: (a, b) => a.age - b.age,
+    title: "Mã số thuế",
+    dataIndex: "taxCode",
   },
   {
-    title: "Address",
+    title: "Địa chỉ",
     dataIndex: "address",
     filters: [
       {
-        text: "London",
-        value: "London",
+        text: "Hải Phòng",
+        value: "Hải Phòng",
       },
       {
-        text: "New York",
-        value: "New York",
+        text: "Hà Nội",
+        value: "Hà Nội",
+      },
+      {
+        text: "TP. Hồ Chí Minh",
+        value: "TP. Hồ Chí Minh",
       },
     ],
-    onFilter: (value, record) => record.address.indexOf(value as string) === 0,
+    onFilter: (value, record) => record.address.indexOf(value as string) !== -1,
   },
 ];
 
 const data = [
   {
     key: "1",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park",
+    name: "Công ty Bảo Việt Hải Phòng",
+    taxCode: "123456-3",
+    address: "24 Điện Biên Phủ, Ngô Quyền, Hải Phòng",
   },
   {
     key: "2",
-    name: "Jim Green",
-    age: 42,
-    address: "London No. 1 Lake Park",
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    age: 32,
-    address: "Sydney No. 1 Lake Park",
-  },
-  {
-    key: "4",
-    name: "Jim Red",
-    age: 32,
-    address: "London No. 2 Lake Park",
+    name: "Tổng Công ty Bảo hiểm Bảo Việt",
+    taxCode: "123456",
+    address: "Số 7 Lý Thường Kiệt, Hà Nội",
   },
 ];
 
@@ -106,6 +66,7 @@ const onChange: TableProps<DataType>["onChange"] = (
 
 const CustomerTable: React.FC = () => (
   <Table
+    locale={{ emptyText: "Không tìm thấy khách hàng" }}
     columns={columns}
     dataSource={data}
     onChange={onChange}

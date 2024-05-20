@@ -34,7 +34,7 @@ export default function DashboardLayout({
 
   return (
     <Layout style={{ height: "100vh" }}>
-      <Sider breakpoint="lg" collapsedWidth="0">
+      <Sider breakpoint="xxl" collapsedWidth="0">
         <div style={{ textAlign: "center", margin: 7 }}>
           <FundFilled
             style={{
