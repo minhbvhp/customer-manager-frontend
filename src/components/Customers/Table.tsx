@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Table } from "antd";
 import type { TableColumnsType, TableProps } from "antd";
 
@@ -64,14 +64,25 @@ const onChange: TableProps<DataType>["onChange"] = (
   console.log("params", pagination, filters, sorter, extra);
 };
 
-const CustomerTable: React.FC = () => (
-  <Table
-    locale={{ emptyText: "Không tìm thấy khách hàng" }}
-    columns={columns}
-    dataSource={data}
-    onChange={onChange}
-    showSorterTooltip={{ target: "sorter-icon" }}
-  />
-);
+const CustomerTable: React.FC = () => {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  }, []);
+
+  return (
+    <Table
+      loading={loading}
+      locale={{ emptyText: "Không tìm thấy khách hàng" }}
+      columns={columns}
+      dataSource={data}
+      onChange={onChange}
+      showSorterTooltip={{ target: "sorter-icon" }}
+    />
+  );
+};
 
 export default CustomerTable;

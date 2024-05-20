@@ -72,11 +72,11 @@ export default function DashboardLayout({
         </Header>
         <Divider style={{ margin: 0 }} />
 
-        <Content style={{ margin: "2rem" }}>
+        <Content style={{ margin: "1rem" }}>
           <div
             style={{
               padding: 20,
-              minHeight: 360,
+              minHeight: 460,
               background: colorBgContainer,
               borderRadius: borderRadiusLG,
             }}
