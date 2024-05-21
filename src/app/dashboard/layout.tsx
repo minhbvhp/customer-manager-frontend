@@ -16,19 +16,28 @@ export default function DashboardLayout({
   } = theme.useToken();
 
   return (
-    <Layout style={{ height: "100vh" }}>
-      <Sider breakpoint="xxl" collapsedWidth="0">
+    <Layout>
+      <Sider
+        breakpoint="xxl"
+        collapsedWidth="0"
+        style={{
+          height: "100vh",
+          position: "sticky",
+          left: 0,
+          top: 0,
+          bottom: 0,
+        }}
+      >
         <div style={{ textAlign: "center", margin: 7 }}>
           <FundFilled
             style={{
               fontSize: "50px",
               color: "white",
               display: "inline-block",
-              verticalAlign: "middle",
             }}
           />
         </div>
-        <Divider style={{ margin: 0 }} />
+        <Divider style={{ margin: 0, borderColor: "white", opacity: 0.1 }} />
         <DashboardMenu />
       </Sider>
 
@@ -37,6 +46,10 @@ export default function DashboardLayout({
           style={{
             background: colorBgContainer,
             direction: "rtl",
+            position: "sticky",
+            zIndex: 100,
+            top: 0,
+            boxShadow: "rgba(0, 0, 0, 0.2) 0px 15px 10px -15px",
           }}
         >
           <Space>
@@ -53,9 +66,10 @@ export default function DashboardLayout({
             </Avatar>
           </Space>
         </Header>
+
         <Divider style={{ margin: 0 }} />
 
-        <Content style={{ margin: "1rem" }}>
+        <Content style={{ margin: 20 }}>
           <div
             style={{
               padding: 20,
@@ -68,7 +82,17 @@ export default function DashboardLayout({
           </div>
         </Content>
 
-        <Footer style={{ textAlign: "center", background: colorBgContainer }}>
+        <Footer
+          style={{
+            textAlign: "center",
+          }}
+        >
+          <Divider
+            orientation="center"
+            style={{
+              borderColor: "#dfae04",
+            }}
+          />
           Design ©{new Date().getFullYear()}
         </Footer>
       </Layout>

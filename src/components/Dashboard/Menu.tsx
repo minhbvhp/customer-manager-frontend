@@ -18,12 +18,12 @@ const items: MenuItem[] = [
     icon: <HomeOutlined />,
   },
   {
-    key: "/dashboard/customer",
+    key: "/dashboard/customers",
     label: "Khách hàng",
     icon: <UserOutlined />,
   },
   {
-    key: "/dashboard/policy",
+    key: "/dashboard/policies",
     label: "Đơn bảo hiểm",
     icon: <FileTextOutlined />,
   },
