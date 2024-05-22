@@ -1,88 +1,65 @@
 "use client";
-import React, { useEffect, useState } from "react";
 import { Table } from "antd";
 import type { TableColumnsType, TableProps } from "antd";
 
 interface DataType {
   key: React.Key;
-  name: string;
+  fullName: string;
   taxCode: string;
   address: string;
 }
 
-const columns: TableColumnsType<DataType> = [
-  {
-    title: "Khách hàng",
-    dataIndex: "name",
-  },
-  {
-    title: "Mã số thuế",
-    dataIndex: "taxCode",
-  },
-  {
-    title: "Địa chỉ",
-    dataIndex: "address",
-    filters: [
-      {
-        text: "Hải Phòng",
-        value: "Hải Phòng",
-      },
-      {
-        text: "Hà Nội",
-        value: "Hà Nội",
-      },
-      {
-        text: "TP. Hồ Chí Minh",
-        value: "TP. Hồ Chí Minh",
-      },
-    ],
-    onFilter: (value, record) => record.address.indexOf(value as string) !== -1,
-  },
-];
+function CustomerTable(customters: any) {
+  const columns: TableColumnsType<DataType> = [
+    {
+      title: "Khách hàng",
+      dataIndex: "fullName",
+    },
+    {
+      title: "Mã số thuế",
+      dataIndex: "taxCode",
+    },
+    {
+      title: "Địa chỉ",
+      dataIndex: "address",
+      filters: [
+        {
+          text: "Hải Phòng",
+          value: "Hải Phòng",
+        },
+        {
+          text: "Hà Nội",
+          value: "Hà Nội",
+        },
+        {
+          text: "TP. Hồ Chí Minh",
+          value: "TP. Hồ Chí Minh",
+        },
+      ],
+      onFilter: (value, record) =>
+        record.address.indexOf(value as string) !== -1,
+    },
+  ];
 
-const data = [
-  {
-    key: "1",
-    name: "Công ty Bảo Việt Hải Phòng",
-    taxCode: "123456-3",
-    address: "24 Điện Biên Phủ, Ngô Quyền, Hải Phòng",
-  },
-  {
-    key: "2",
-    name: "Tổng Công ty Bảo hiểm Bảo Việt",
-    taxCode: "123456",
-    address: "Số 7 Lý Thường Kiệt, Hà Nội",
-  },
-];
+  const customersArray = JSON.stringify(customters);
 
-const onChange: TableProps<DataType>["onChange"] = (
-  pagination,
-  filters,
-  sorter,
-  extra
-) => {
-  console.log("params", pagination, filters, sorter, extra);
-};
+  console.log(customters.customters[0]);
 
-const CustomerTable: React.FC = () => {
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
-  }, []);
+  // const data = customters.map((customer: any) => ({
+  //   key: customer.id,
+  //   name: customer.fullName,
+  //   taxCode: customer.taxCode,
+  //   address: customer.street,
+  // }));
 
   return (
     <Table
-      loading={loading}
       locale={{ emptyText: "Không tìm thấy khách hàng" }}
       columns={columns}
-      dataSource={data}
-      onChange={onChange}
+      // dataSource={data}
       showSorterTooltip={{ target: "sorter-icon" }}
     />
   );
-};
+}
 
 export default CustomerTable;
