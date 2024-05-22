@@ -1,6 +1,6 @@
 import CreateCustomerForm from "@/components/Customers/CreateForm";
 import { HomeOutlined, UserOutlined } from "@ant-design/icons";
-import { Breadcrumb, Divider } from "antd";
+import { Breadcrumb, Divider, Button, Flex, Row, Col } from "antd";
 
 export default async function CreateCustomerPage() {
   return (
@@ -28,7 +28,17 @@ export default async function CreateCustomerPage() {
 
       <Divider />
 
-      <CreateCustomerForm />
+      <Row>
+        <Col span={24}>
+          <Flex justify="center" align="center">
+            <Flex justify="center" align="flex-end" vertical>
+              <CreateCustomerForm />
+
+              <Button type="primary">Tạo mới</Button>
+            </Flex>
+          </Flex>
+        </Col>
+      </Row>
     </>
   );
 }

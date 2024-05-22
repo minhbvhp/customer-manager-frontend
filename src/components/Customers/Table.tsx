@@ -1,4 +1,5 @@
 "use client";
+import { Customer } from "@/app/lib/definitions";
 import { Table } from "antd";
 import type { TableColumnsType, TableProps } from "antd";
 
@@ -9,7 +10,7 @@ interface DataType {
   address: string;
 }
 
-function CustomerTable({ customers }: { customers: any }) {
+function CustomerTable({ customers }: { customers: Customer[] }) {
   const columns: TableColumnsType<DataType> = [
     {
       title: "Khách hàng",
