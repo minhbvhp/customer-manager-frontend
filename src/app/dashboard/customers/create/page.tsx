@@ -28,17 +28,13 @@ export default async function CreateCustomerPage() {
 
       <Divider />
 
-      <Row>
-        <Col span={24}>
-          <Flex justify="center" align="center">
-            <Flex justify="center" align="flex-end" vertical>
-              <CreateCustomerForm />
+      <div>
+        <CreateCustomerForm />
 
-              <Button type="primary">Tạo mới</Button>
-            </Flex>
-          </Flex>
-        </Col>
-      </Row>
+        <div>
+          <Button type="primary">Tạo mới</Button>
+        </div>
+      </div>
     </>
   );
 }

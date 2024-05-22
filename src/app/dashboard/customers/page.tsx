@@ -2,6 +2,7 @@ import CustomerTable from "@/components/Customers/Table";
 import { Flex, Divider } from "antd";
 import { CreateCustomer } from "@/components/Customers/Button";
 import { fetchAllCustomers } from "@/app/lib/data";
+import { Suspense } from "react";
 
 export default async function CustomerPage() {
   const customers = await fetchAllCustomers();
@@ -15,7 +16,9 @@ export default async function CustomerPage() {
       <Divider style={{ margin: 0 }} />
 
       <div>
-        <CustomerTable customers={customers} />
+        <Suspense fallback={<p>Đang tải dữ liệu...</p>}>
+          <CustomerTable customers={customers} />
+        </Suspense>
       </div>
     </Flex>
   );
