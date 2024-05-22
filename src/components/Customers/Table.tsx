@@ -9,7 +9,7 @@ interface DataType {
   address: string;
 }
 
-function CustomerTable(customters: any) {
+function CustomerTable({ customers }: { customers: any }) {
   const columns: TableColumnsType<DataType> = [
     {
       title: "Khách hàng",
@@ -41,22 +41,20 @@ function CustomerTable(customters: any) {
     },
   ];
 
-  const customersArray = JSON.stringify(customters);
-
-  console.log(customters.customters[0]);
-
-  // const data = customters.map((customer: any) => ({
-  //   key: customer.id,
-  //   name: customer.fullName,
-  //   taxCode: customer.taxCode,
-  //   address: customer.street,
-  // }));
+  const data = customers.map((customer: any) => ({
+    key: customer.id,
+    fullName: customer.fullName,
+    taxCode: customer.taxCode,
+    address: customer.street
+      ? `${customer.street}, ${customer.ward.fullName}, ${customer.ward.district.fullName}, ${customer.ward.district.province.fullName}`
+      : `${customer.ward.fullName}`,
+  }));
 
   return (
     <Table
       locale={{ emptyText: "Không tìm thấy khách hàng" }}
       columns={columns}
-      // dataSource={data}
+      dataSource={data}
       showSorterTooltip={{ target: "sorter-icon" }}
     />
   );

@@ -3,8 +3,8 @@ import { Flex, Divider } from "antd";
 import { CreateCustomer } from "@/components/Customers/Button";
 import { fetchAllCustomers } from "@/app/lib/data";
 
-export default async function CustomerList() {
-  const allCustomers = await fetchAllCustomers();
+export default async function CustomerPage() {
+  const customers = await fetchAllCustomers();
 
   return (
     <Flex justify="space-between" gap="large" vertical>
@@ -15,15 +15,7 @@ export default async function CustomerList() {
       <Divider style={{ margin: 0 }} />
 
       <div>
-        <CustomerTable customters={allCustomers} />
-      </div>
-
-      <div>
-        <ul>
-          {allCustomers.map((customer: any) => (
-            <li key={customer.id}>{customer.fullName}</li>
-          ))}
-        </ul>
+        <CustomerTable customers={customers} />
       </div>
     </Flex>
   );
