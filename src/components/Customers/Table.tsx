@@ -1,7 +1,7 @@
 "use client";
 import { Customer } from "@/app/lib/definitions";
 import { Table } from "antd";
-import type { TableColumnsType, TableProps } from "antd";
+import type { TableColumnsType } from "antd";
 
 interface DataType {
   key: React.Key;

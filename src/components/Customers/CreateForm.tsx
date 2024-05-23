@@ -6,7 +6,7 @@ import { useActionState } from "react";
 
 const { Option } = Select;
 
-const filterProvinceOption = (
+const filterOption = (
   input: string,
   option?: { label: string; value: string }
 ) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
@@ -16,6 +16,20 @@ export default function CreateCustomerForm({
 }: {
   provinces: any[];
 }) {
+  const [form] = Form.useForm();
+
+  const onFinish = (values: any) => {
+    console.log("On Finish: ", values);
+  };
+
+  const onProvinceChange = (value: any, option: any) => {
+    console.log("On Province change: ", value, option);
+  };
+
+  const handleFormValuesChange = (changedValue: any, value: any) => {
+    console.log("On Form values change: ", changedValue, value);
+  };
+
   const provinceOptions = provinces.map((province: any) => ({
     value: province.name,
     label: province.name,
@@ -23,9 +37,12 @@ export default function CreateCustomerForm({
 
   return (
     <Form
+      onValuesChange={handleFormValuesChange}
       labelCol={{ span: 8 }}
       wrapperCol={{ span: 16 }}
       style={{ maxWidth: 500 }}
+      form={form}
+      onFinish={onFinish}
     >
       <Form.Item label="Tên khách hàng">
         <Form.Item
@@ -68,8 +85,9 @@ export default function CreateCustomerForm({
             showSearch
             placeholder="- Chọn -"
             optionFilterProp="children"
-            filterOption={filterProvinceOption}
+            filterOption={filterOption}
             options={provinceOptions}
+            onChange={onProvinceChange}
           />
         </Form.Item>
       </Form.Item>
@@ -85,7 +103,7 @@ export default function CreateCustomerForm({
             showSearch
             placeholder="- Chọn -"
             optionFilterProp="children"
-            filterOption={filterProvinceOption}
+            filterOption={filterOption}
             // options={provinceOptions}
           />
         </Form.Item>
@@ -102,7 +120,7 @@ export default function CreateCustomerForm({
             showSearch
             placeholder="- Chọn -"
             optionFilterProp="children"
-            filterOption={filterProvinceOption}
+            filterOption={filterOption}
             // options={provinceOptions}
           />
         </Form.Item>

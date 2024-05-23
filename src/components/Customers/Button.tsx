@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { PlusOutlined } from "@ant-design/icons";
-import { Button, Divider } from "antd";
+import { Button } from "antd";
 
 export function CreateCustomer() {
   return (
