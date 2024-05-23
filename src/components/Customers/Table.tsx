@@ -10,7 +10,11 @@ interface DataType {
   address: string;
 }
 
-function CustomerTable({ customers }: { customers: Customer[] }) {
+export default function CustomerTable({
+  customers,
+}: {
+  customers: Customer[];
+}) {
   const columns: TableColumnsType<DataType> = [
     {
       title: "Khách hàng",
@@ -60,5 +64,3 @@ function CustomerTable({ customers }: { customers: Customer[] }) {
     />
   );
 }
-
-export default CustomerTable;

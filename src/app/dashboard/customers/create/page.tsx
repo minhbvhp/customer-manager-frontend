@@ -1,8 +1,11 @@
+import { fetchAllProvinces } from "@/app/lib/data";
 import CreateCustomerForm from "@/components/Customers/CreateForm";
 import { HomeOutlined, UserOutlined } from "@ant-design/icons";
 import { Breadcrumb, Divider, Button, Flex, Row, Col } from "antd";
 
 export default async function CreateCustomerPage() {
+  const provinces = await fetchAllProvinces();
+
   return (
     <>
       <Breadcrumb
@@ -28,7 +31,7 @@ export default async function CreateCustomerPage() {
 
       <Divider />
 
-      <CreateCustomerForm />
+      <CreateCustomerForm provinces={provinces} />
     </>
   );
 }

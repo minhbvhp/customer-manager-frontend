@@ -7,3 +7,13 @@ export async function fetchAllCustomers() {
     return [];
   }
 }
+
+export async function fetchAllProvinces() {
+  try {
+    const url = process.env.BACKEND_URL + "/addresses";
+    const allProvinces = await fetch(url, { cache: "no-store" });
+    return allProvinces.json();
+  } catch {
+    return [];
+  }
+}
