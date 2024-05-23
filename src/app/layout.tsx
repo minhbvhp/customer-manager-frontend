@@ -6,7 +6,10 @@ import { ConfigProvider } from "antd";
 const inter = Inter({ subsets: ["vietnamese"] });
 
 export const metadata: Metadata = {
-  title: "Quản lý khách hàng",
+  title: {
+    template: "%s | Oh my job",
+    default: "Oh my job",
+  },
   description: "Ứng dụng quản lý khách khàng",
 };
 

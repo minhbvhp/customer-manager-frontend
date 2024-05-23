@@ -1,4 +1,9 @@
+import { Metadata } from "next";
 import { ConfigProvider } from "antd";
+
+export const metadata: Metadata = {
+  title: "Khách hàng",
+};
 
 export default function CustomerListLayout({
   children,
