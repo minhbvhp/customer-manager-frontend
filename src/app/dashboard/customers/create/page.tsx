@@ -28,13 +28,9 @@ export default async function CreateCustomerPage() {
 
       <Divider />
 
-      <div>
+      <Row style={{ padding: "0 50px 0 50px" }} justify={"center"}>
         <CreateCustomerForm />
-
-        <div>
-          <Button type="primary">Tạo mới</Button>
-        </div>
-      </div>
+      </Row>
     </>
   );
 }
