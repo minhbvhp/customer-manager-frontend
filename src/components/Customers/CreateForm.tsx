@@ -1,15 +1,7 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { Form, Input, Select, Button, Space } from "antd";
-import { useActionState } from "react";
-
-const { Option } = Select;
-
-const filterOption = (
-  input: string,
-  option?: { label: string; value: string }
-) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
 export default function CreateCustomerForm({
   provinces,
@@ -17,27 +9,47 @@ export default function CreateCustomerForm({
   provinces: any[];
 }) {
   const [form] = Form.useForm();
+  const [districtOptions, setDistrictOptions] = useState([]);
+  const [wardOptions, setWardOptions] = useState([]);
+
+  const filterOption = (
+    input: string,
+    option?: { label: string; value: string }
+  ) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+
+  const provinceOptions = provinces.map((province: any) => ({
+    value: province.name,
+    label: province.name,
+    districts: province.districts,
+  }));
 
   const onFinish = (values: any) => {
     console.log("On Finish: ", values);
   };
 
-  const onProvinceChange = (value: any, option: any) => {
-    console.log("On Province change: ", value, option);
+  const onSelectProvince = (value: any, option: any) => {
+    form.resetFields(["district", "ward"]);
+    const districts = option.districts;
+    const _districtOptions = districts.map((district: any) => ({
+      value: district.name,
+      label: district.name,
+      wards: district.wards,
+    }));
+    setDistrictOptions(_districtOptions);
   };
 
-  const handleFormValuesChange = (changedValue: any, value: any) => {
-    console.log("On Form values change: ", changedValue, value);
+  const onSelectDistrict = (value: any, option: any) => {
+    form.resetFields(["ward"]);
+    const wards = option.wards;
+    const _wardOptions = wards.map((ward: any) => ({
+      value: ward.name,
+      label: ward.name,
+    }));
+    setWardOptions(_wardOptions);
   };
-
-  const provinceOptions = provinces.map((province: any) => ({
-    value: province.name,
-    label: province.name,
-  }));
 
   return (
     <Form
-      onValuesChange={handleFormValuesChange}
       labelCol={{ span: 8 }}
       wrapperCol={{ span: 16 }}
       style={{ maxWidth: 500 }}
@@ -86,8 +98,8 @@ export default function CreateCustomerForm({
             placeholder="- Chọn -"
             optionFilterProp="children"
             filterOption={filterOption}
+            onSelect={onSelectProvince}
             options={provinceOptions}
-            onChange={onProvinceChange}
           />
         </Form.Item>
       </Form.Item>
@@ -104,7 +116,8 @@ export default function CreateCustomerForm({
             placeholder="- Chọn -"
             optionFilterProp="children"
             filterOption={filterOption}
-            // options={provinceOptions}
+            onSelect={onSelectDistrict}
+            options={districtOptions}
           />
         </Form.Item>
       </Form.Item>
@@ -121,7 +134,7 @@ export default function CreateCustomerForm({
             placeholder="- Chọn -"
             optionFilterProp="children"
             filterOption={filterOption}
-            // options={provinceOptions}
+            options={wardOptions}
           />
         </Form.Item>
       </Form.Item>
