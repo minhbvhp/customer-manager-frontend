@@ -1,7 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
-import { Form, Input, Select, Button, Space } from "antd";
+import { Form, Input, Select, Button, Space, message } from "antd";
+import { NewCustomer } from "@/app/lib/definitions";
 
 export default function CreateCustomerForm({
   provinces,
@@ -11,6 +12,7 @@ export default function CreateCustomerForm({
   const [form] = Form.useForm();
   const [districtOptions, setDistrictOptions] = useState([]);
   const [wardOptions, setWardOptions] = useState([]);
+  const [wardCode, setWardCode] = useState("");
 
   const filterOption = (
     input: string,
@@ -24,7 +26,15 @@ export default function CreateCustomerForm({
   }));
 
   const onFinish = (values: any) => {
-    console.log("On Finish: ", values);
+    const newCustomer: NewCustomer = {
+      fullName: values.customerName,
+      taxCode: values.taxCode,
+      street: values.street,
+      wardCode,
+    };
+
+    console.log(newCustomer);
+    message.success("Đã tạo khách hàng mới");
   };
 
   const onSelectProvince = (value: any, option: any) => {
@@ -44,8 +54,13 @@ export default function CreateCustomerForm({
     const _wardOptions = wards.map((ward: any) => ({
       value: ward.name,
       label: ward.name,
+      wardCode: ward.code,
     }));
     setWardOptions(_wardOptions);
+  };
+
+  const onSelectWard = (value: any, option: any) => {
+    setWardCode(option.wardCode);
   };
 
   return (
@@ -77,11 +92,7 @@ export default function CreateCustomerForm({
       </Form.Item>
 
       <Form.Item label="Số nhà/đường">
-        <Form.Item
-          name="street"
-          noStyle
-          rules={[{ required: true, message: "*Bắt buộc" }]}
-        >
+        <Form.Item name="street" noStyle>
           <Input />
         </Form.Item>
       </Form.Item>
@@ -135,6 +146,7 @@ export default function CreateCustomerForm({
             optionFilterProp="children"
             filterOption={filterOption}
             options={wardOptions}
+            onSelect={onSelectWard}
           />
         </Form.Item>
       </Form.Item>

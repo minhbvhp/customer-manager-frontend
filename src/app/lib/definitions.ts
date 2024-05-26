@@ -5,3 +5,10 @@ export type Customer = {
   street: string;
   wardCode: string;
 };
+
+export type NewCustomer = {
+  fullName: string;
+  taxCode: string;
+  street: string;
+  wardCode: string;
+};
