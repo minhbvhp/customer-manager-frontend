@@ -42,7 +42,9 @@ export default function CreateCustomerForm({
     const result = await createCustomer(newCustomer);
 
     if (result.statusCode) {
-      message.error(result.message[0]);
+      message.error(
+        Array.isArray(result.message) ? result.message[0] : result.message
+      );
     } else {
       message.success("Đã tạo khách hàng mới");
       router.push("/dashboard/customers");
@@ -79,6 +81,8 @@ export default function CreateCustomerForm({
 
   return (
     <Form
+      autoCorrect="off"
+      autoComplete="off"
       labelCol={{ span: 8 }}
       wrapperCol={{ span: 16 }}
       style={{ maxWidth: 500 }}

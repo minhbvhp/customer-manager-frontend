@@ -18,6 +18,7 @@ export async function createCustomer(customer: NewCustomer) {
     return res.json();
   } catch {
     return {
+      statusCode: 500,
       message: "Có lỗi xảy ra. Không tạo được khách hàng mới",
     };
   }

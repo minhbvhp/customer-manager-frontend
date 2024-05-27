@@ -1,9 +1,8 @@
 "use client";
 import { Customer } from "@/app/lib/definitions";
-import { Table } from "antd";
+import { Table, Space } from "antd";
 import type { TableColumnsType } from "antd";
-import { pages } from "next/dist/build/templates/app-page";
-
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 interface DataType {
   key: React.Key;
   fullName: string;
