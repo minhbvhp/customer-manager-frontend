@@ -3,6 +3,10 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { Form, Input, Select, Button, Space, message } from "antd";
 import { NewCustomer } from "@/app/lib/definitions";
+import { createSchemaFieldRule } from "antd-zod";
+import { CreateCustomerFormSchema } from "@/app/lib/validations";
+import { createCustomer } from "@/app/lib/actions";
+import { useRouter } from "next/navigation";
 
 export default function CreateCustomerForm({
   provinces,
@@ -13,6 +17,7 @@ export default function CreateCustomerForm({
   const [districtOptions, setDistrictOptions] = useState([]);
   const [wardOptions, setWardOptions] = useState([]);
   const [wardCode, setWardCode] = useState("");
+  const router = useRouter();
 
   const filterOption = (
     input: string,
@@ -25,16 +30,23 @@ export default function CreateCustomerForm({
     districts: province.districts,
   }));
 
-  const onFinish = (values: any) => {
+  const onFinish = async (values: any) => {
     const newCustomer: NewCustomer = {
-      fullName: values.customerName,
+      fullName: values.fullName,
       taxCode: values.taxCode,
+      urn: values.urn,
       street: values.street,
       wardCode,
     };
 
-    console.log(newCustomer);
-    message.success("Đã tạo khách hàng mới");
+    const result = await createCustomer(newCustomer);
+
+    if (result.statusCode) {
+      message.error(result.message[0]);
+    } else {
+      message.success("Đã tạo khách hàng mới");
+      router.push("/dashboard/customers");
+    }
   };
 
   const onSelectProvince = (value: any, option: any) => {
@@ -63,6 +75,8 @@ export default function CreateCustomerForm({
     setWardCode(option.wardCode);
   };
 
+  const rule = createSchemaFieldRule(CreateCustomerFormSchema);
+
   return (
     <Form
       labelCol={{ span: 8 }}
@@ -72,37 +86,31 @@ export default function CreateCustomerForm({
       onFinish={onFinish}
     >
       <Form.Item label="Tên khách hàng">
-        <Form.Item
-          name="customerName"
-          noStyle
-          rules={[{ required: true, message: "*Bắt buộc" }]}
-        >
+        <Form.Item name="fullName" noStyle rules={[rule]}>
           <Input />
         </Form.Item>
       </Form.Item>
 
       <Form.Item label="Mã số thuế">
-        <Form.Item
-          name="taxCode"
-          noStyle
-          rules={[{ required: true, message: "*Bắt buộc" }]}
-        >
+        <Form.Item name="taxCode" noStyle rules={[rule]}>
+          <Input />
+        </Form.Item>
+      </Form.Item>
+
+      <Form.Item label="Số URN">
+        <Form.Item name="urn" noStyle rules={[rule]}>
           <Input />
         </Form.Item>
       </Form.Item>
 
       <Form.Item label="Số nhà/đường">
-        <Form.Item name="street" noStyle>
+        <Form.Item name="street" noStyle rules={[rule]}>
           <Input />
         </Form.Item>
       </Form.Item>
 
       <Form.Item label="Tỉnh/TP">
-        <Form.Item
-          name="province"
-          noStyle
-          rules={[{ required: true, message: "*Bắt buộc" }]}
-        >
+        <Form.Item name="province" noStyle>
           <Select
             notFoundContent="Không tìm thấy"
             showSearch
@@ -116,11 +124,7 @@ export default function CreateCustomerForm({
       </Form.Item>
 
       <Form.Item label="Quận/Huyện">
-        <Form.Item
-          name="district"
-          noStyle
-          rules={[{ required: true, message: "*Bắt buộc" }]}
-        >
+        <Form.Item name="district" noStyle>
           <Select
             notFoundContent="Không tìm thấy"
             showSearch
@@ -134,11 +138,7 @@ export default function CreateCustomerForm({
       </Form.Item>
 
       <Form.Item label="Phường/Xã">
-        <Form.Item
-          name="ward"
-          noStyle
-          rules={[{ required: true, message: "*Bắt buộc" }]}
-        >
+        <Form.Item name="wardCode" noStyle rules={[rule]}>
           <Select
             notFoundContent="Không tìm thấy"
             showSearch
@@ -151,7 +151,7 @@ export default function CreateCustomerForm({
         </Form.Item>
       </Form.Item>
 
-      <Form.Item label=" " colon={false}>
+      <Form.Item label=" " colon={false} style={{ marginTop: 10 }}>
         <Space>
           <Button type="primary" htmlType="submit">
             Tạo

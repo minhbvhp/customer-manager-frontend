@@ -9,6 +9,7 @@ export type Customer = {
 export type NewCustomer = {
   fullName: string;
   taxCode: string;
+  urn: string;
   street: string;
   wardCode: string;
 };

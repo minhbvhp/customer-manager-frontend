@@ -2,6 +2,7 @@
 import { Customer } from "@/app/lib/definitions";
 import { Table } from "antd";
 import type { TableColumnsType } from "antd";
+import { pages } from "next/dist/build/templates/app-page";
 
 interface DataType {
   key: React.Key;
@@ -57,6 +58,7 @@ export default function CustomerTable({
 
   return (
     <Table
+      pagination={{ pageSize: 5 }}
       locale={{ emptyText: "Không tìm thấy khách hàng" }}
       columns={columns}
       dataSource={data}
