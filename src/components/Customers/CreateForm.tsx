@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Form, Input, Select, Button, Space, message } from "antd";
 import { NewCustomer } from "@/app/lib/definitions";
@@ -17,7 +17,12 @@ export default function CreateCustomerForm({
   const [districtOptions, setDistrictOptions] = useState([]);
   const [wardOptions, setWardOptions] = useState([]);
   const [wardCode, setWardCode] = useState("");
+  const [isProvincesLoading, setisProvincesLoading] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    if (!provinces) setisProvincesLoading(true);
+  }, [provinces]);
 
   const filterOption = (
     input: string,
@@ -116,6 +121,7 @@ export default function CreateCustomerForm({
       <Form.Item label="Tỉnh/TP">
         <Form.Item name="province" noStyle>
           <Select
+            loading={isProvincesLoading}
             notFoundContent="Không tìm thấy"
             showSearch
             placeholder="- Chọn -"

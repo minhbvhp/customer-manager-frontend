@@ -5,5 +5,5 @@ export const metadata: Metadata = {
 };
 
 export default function Dashboard() {
-  return <>Nội dung chính</>;
+  return <main>Nội dung chính</main>;
 }

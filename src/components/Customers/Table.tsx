@@ -2,6 +2,7 @@
 import { Customer } from "@/app/lib/definitions";
 import { Table } from "antd";
 import type { TableColumnsType } from "antd";
+import { useEffect, useState } from "react";
 interface DataType {
   key: React.Key;
   fullName: string;
@@ -14,6 +15,12 @@ export default function CustomerTable({
 }: {
   customers: Customer[];
 }) {
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (!customers) setIsLoading(true);
+  }, [customers]);
+
   const columns: TableColumnsType<DataType> = [
     {
       title: "Khách hàng",
@@ -56,6 +63,7 @@ export default function CustomerTable({
 
   return (
     <Table
+      loading={isLoading}
       pagination={{ pageSize: 5 }}
       locale={{ emptyText: "Không tìm thấy khách hàng" }}
       columns={columns}
