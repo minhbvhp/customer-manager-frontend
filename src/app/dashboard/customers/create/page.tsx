@@ -1,8 +1,9 @@
 import { fetchAllProvinces } from "@/app/lib/data";
 import CreateCustomerForm from "@/components/Customers/CreateForm";
 import { HomeOutlined, UserOutlined } from "@ant-design/icons";
-import { Breadcrumb, Divider } from "antd";
+import { Breadcrumb, Divider, Spin } from "antd";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
+import { Suspense } from "react";
 
 export default async function CreateCustomerPage() {
   const provinces = await fetchAllProvinces();
@@ -33,7 +34,9 @@ export default async function CreateCustomerPage() {
 
         <Divider />
 
-        <CreateCustomerForm provinces={provinces} />
+        <Suspense fallback={<Spin size="large" />}>
+          <CreateCustomerForm provinces={provinces} />
+        </Suspense>
       </AntdRegistry>
     </main>
   );

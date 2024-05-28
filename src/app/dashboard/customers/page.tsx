@@ -1,8 +1,9 @@
 import CustomerTable from "@/components/Customers/Table";
-import { Flex, Divider } from "antd";
+import { Flex, Divider, Spin } from "antd";
 import { CreateCustomer } from "@/components/Customers/Button";
 import { fetchAllCustomers } from "@/app/lib/data";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
+import { Suspense } from "react";
 
 export default async function CustomerPage() {
   const customers = await fetchAllCustomers();
@@ -17,7 +18,9 @@ export default async function CustomerPage() {
 
           <Divider style={{ margin: 0 }} />
 
-          <CustomerTable customers={customers} />
+          <Suspense fallback={<Spin size="large" />}>
+            <CustomerTable customers={customers} />
+          </Suspense>
         </Flex>
       </AntdRegistry>
     </main>

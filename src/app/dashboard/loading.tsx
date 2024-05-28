@@ -1,4 +1,4 @@
-import { Spin, Flex } from "antd";
+import { Spin } from "antd";
 
 export default function Loading() {
   const contentStyle: React.CSSProperties = {
