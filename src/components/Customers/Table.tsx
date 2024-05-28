@@ -51,7 +51,7 @@ export default function CustomerTable({
     taxCode: customer.taxCode,
     address: customer.street
       ? `${customer.street}, ${customer.ward.fullName}, ${customer.ward.district.fullName}, ${customer.ward.district.province.fullName}`
-      : `${customer.ward.fullName}`,
+      : `${customer.ward.fullName}, ${customer.ward.district.fullName}, ${customer.ward.district.province.fullName}`,
   }));
 
   const arrayAddress = customers.map((customer: any) => ({
