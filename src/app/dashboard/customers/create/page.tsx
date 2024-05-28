@@ -1,5 +1,5 @@
 import { fetchAllProvinces } from "@/app/lib/data";
-import CreateCustomerForm from "@/components/Customers/CreateForm";
+import CreateCustomerForm from "@/app/components/Customers/CreateForm";
 import { HomeOutlined, UserOutlined } from "@ant-design/icons";
 import { Breadcrumb, Divider, Spin } from "antd";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
