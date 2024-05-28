@@ -2,7 +2,7 @@
 import React from "react";
 import { FundFilled, SettingOutlined } from "@ant-design/icons";
 import { Layout, Divider, Avatar, Space, theme } from "antd";
-import DashboardMenu from "@/components/Dashboard/Menu";
+import DashboardMenu from "@/app/components/Dashboard/Menu";
 
 const { Header, Content, Footer, Sider } = Layout;
 

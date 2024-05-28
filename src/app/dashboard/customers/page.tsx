@@ -1,6 +1,6 @@
-import CustomerTable from "@/components/Customers/Table";
+import CustomerTable from "@/app/components/Customers/Table";
 import { Flex, Divider, Spin } from "antd";
-import { CreateCustomer } from "@/components/Customers/Button";
+import { CreateCustomer } from "@/app/components/Customers/Button";
 import { fetchAllCustomers } from "@/app/lib/data";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { Suspense } from "react";
