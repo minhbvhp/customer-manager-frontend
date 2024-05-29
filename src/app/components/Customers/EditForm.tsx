@@ -2,15 +2,17 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Form, Input, Select, Button, Space, message } from "antd";
-import { NewCustomer } from "@/app/lib/definitions";
+import { Customer, NewCustomer } from "@/app/lib/definitions";
 import { createSchemaFieldRule } from "antd-zod";
 import { CreateCustomerFormSchema } from "@/app/lib/validations";
 import { createCustomer } from "@/app/lib/actions";
 import { useRouter } from "next/navigation";
 
-export default function CreateCustomerForm({
+export default function EditCustomerForm({
+  customer,
   provinces,
 }: {
+  customer: Customer;
   provinces: any[];
 }) {
   const [form] = Form.useForm();
@@ -47,18 +49,18 @@ export default function CreateCustomerForm({
       wardCode,
     };
 
-    const result = await createCustomer(newCustomer);
+    // const result = await createCustomer(newCustomer);
 
-    setIsFormSubmitting(false);
+    // setIsFormSubmitting(false);
 
-    if (result.statusCode) {
-      message.error(
-        Array.isArray(result.message) ? result.message[0] : result.message
-      );
-    } else {
-      message.success(result.message);
-      router.push("/dashboard/customers");
-    }
+    // if (result.statusCode) {
+    //   message.error(
+    //     Array.isArray(result.message) ? result.message[0] : result.message
+    //   );
+    // } else {
+    //   message.success(result.message);
+    //   router.push("/dashboard/customers");
+    // }
   };
 
   const onSelectProvince = (value: any, option: any) => {
@@ -101,25 +103,25 @@ export default function CreateCustomerForm({
     >
       <Form.Item label="Tên khách hàng">
         <Form.Item name="fullName" noStyle rules={[rule]}>
-          <Input />
+          <Input defaultValue={customer.fullName} />
         </Form.Item>
       </Form.Item>
 
       <Form.Item label="Mã số thuế">
         <Form.Item name="taxCode" noStyle rules={[rule]}>
-          <Input />
+          <Input defaultValue={customer.taxCode} />
         </Form.Item>
       </Form.Item>
 
       <Form.Item label="Số URN">
         <Form.Item name="urn" noStyle rules={[rule]}>
-          <Input />
+          <Input defaultValue={customer.urn} />
         </Form.Item>
       </Form.Item>
 
       <Form.Item label="Số nhà/đường">
         <Form.Item name="street" noStyle rules={[rule]}>
-          <Input />
+          <Input defaultValue={customer.street} />
         </Form.Item>
       </Form.Item>
 
@@ -134,6 +136,7 @@ export default function CreateCustomerForm({
             filterOption={filterOption}
             onSelect={onSelectProvince}
             options={provinceOptions}
+            defaultValue={customer?.ward?.district.province.name}
           />
         </Form.Item>
       </Form.Item>
@@ -148,6 +151,7 @@ export default function CreateCustomerForm({
             filterOption={filterOption}
             onSelect={onSelectDistrict}
             options={districtOptions}
+            defaultValue={customer?.ward?.district.name}
           />
         </Form.Item>
       </Form.Item>
@@ -162,6 +166,7 @@ export default function CreateCustomerForm({
             filterOption={filterOption}
             options={wardOptions}
             onSelect={onSelectWard}
+            defaultValue={customer?.ward?.name}
           />
         </Form.Item>
       </Form.Item>
