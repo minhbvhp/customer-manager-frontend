@@ -6,6 +6,7 @@ import type { FilterDropdownProps } from "antd/es/table/interface";
 import type { InputRef, TableColumnsType, TableColumnType } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
+import Link from "next/link";
 
 interface DataType {
   key: string;
@@ -124,7 +125,11 @@ export default function CustomerTable({
     render: (text) =>
       searchedColumn === dataIndex ? (
         <Highlighter
-          highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
+          highlightStyle={{
+            backgroundColor: "!#ffc069",
+            padding: 0,
+            color: "orange !important",
+          }}
           searchWords={[searchText]}
           autoEscape
           textToHighlight={text ? text.toString() : ""}
@@ -139,6 +144,11 @@ export default function CustomerTable({
       title: "Khách hàng",
       dataIndex: "fullName",
       ...getColumnSearchProps("fullName"),
+      render: (_: any, record: DataType) => (
+        <Link href={`/dashboard/customers/${record.key}`}>
+          {record.fullName}
+        </Link>
+      ),
     },
     {
       title: "Mã số thuế",

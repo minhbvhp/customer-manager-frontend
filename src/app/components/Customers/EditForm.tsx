@@ -27,6 +27,22 @@ export default function EditCustomerForm({
     if (!provinces) setIsProvincesLoading(true);
   }, [provinces]);
 
+  useEffect(() => {
+    form.setFieldsValue(initialValues);
+  }, []);
+
+  const initialValues = {
+    id: customer.id,
+    fullName: customer.fullName,
+    taxCode: customer.taxCode,
+    urn: customer.urn,
+    street: customer.street,
+    wardCode: customer.wardCode,
+    province: customer.ward.district.province.name,
+    district: customer.ward.district.name,
+    ward: customer.ward.name,
+  };
+
   const filterOption = (
     input: string,
     option?: { label: string; value: string }
@@ -103,25 +119,25 @@ export default function EditCustomerForm({
     >
       <Form.Item label="Tên khách hàng">
         <Form.Item name="fullName" noStyle rules={[rule]}>
-          <Input defaultValue={customer.fullName} />
+          <Input />
         </Form.Item>
       </Form.Item>
 
       <Form.Item label="Mã số thuế">
         <Form.Item name="taxCode" noStyle rules={[rule]}>
-          <Input defaultValue={customer.taxCode} />
+          <Input />
         </Form.Item>
       </Form.Item>
 
       <Form.Item label="Số URN">
         <Form.Item name="urn" noStyle rules={[rule]}>
-          <Input defaultValue={customer.urn} />
+          <Input />
         </Form.Item>
       </Form.Item>
 
       <Form.Item label="Số nhà/đường">
         <Form.Item name="street" noStyle rules={[rule]}>
-          <Input defaultValue={customer.street} />
+          <Input />
         </Form.Item>
       </Form.Item>
 
@@ -136,7 +152,6 @@ export default function EditCustomerForm({
             filterOption={filterOption}
             onSelect={onSelectProvince}
             options={provinceOptions}
-            defaultValue={customer?.ward?.district.province.name}
           />
         </Form.Item>
       </Form.Item>
@@ -151,7 +166,6 @@ export default function EditCustomerForm({
             filterOption={filterOption}
             onSelect={onSelectDistrict}
             options={districtOptions}
-            defaultValue={customer?.ward?.district.name}
           />
         </Form.Item>
       </Form.Item>
@@ -166,7 +180,6 @@ export default function EditCustomerForm({
             filterOption={filterOption}
             options={wardOptions}
             onSelect={onSelectWard}
-            defaultValue={customer?.ward?.name}
           />
         </Form.Item>
       </Form.Item>
