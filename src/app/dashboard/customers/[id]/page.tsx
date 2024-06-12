@@ -1,4 +1,4 @@
-import { Breadcrumb, Divider, Spin } from "antd";
+import { Breadcrumb, Divider, Spin, Flex } from "antd";
 import { HomeOutlined, UserOutlined } from "@ant-design/icons";
 import { fetchAllProvinces, fetchCustomerById } from "@/app/lib/data";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
@@ -24,26 +24,30 @@ export default async function DetailCustomerPage({
   return (
     <main>
       <AntdRegistry>
-        <Breadcrumb
-          items={[
-            {
-              href: "/dashboard",
-              title: <HomeOutlined />,
-            },
-            {
-              href: "/dashboard/customers",
-              title: (
-                <>
-                  <UserOutlined />
-                  <span>Khách hàng</span>
-                </>
-              ),
-            },
-            {
-              title: "Chi tiết",
-            },
-          ]}
-        />
+        <Flex justify="space-between" align="center">
+          <Breadcrumb
+            items={[
+              {
+                href: "/dashboard",
+                title: <HomeOutlined />,
+              },
+              {
+                href: "/dashboard/customers",
+                title: (
+                  <>
+                    <UserOutlined />
+                    <span>Khách hàng</span>
+                  </>
+                ),
+              },
+              {
+                title: "Chi tiết",
+              },
+            ]}
+          />
+
+          <h3>{customer.fullName.toUpperCase()}</h3>
+        </Flex>
 
         <Divider />
 

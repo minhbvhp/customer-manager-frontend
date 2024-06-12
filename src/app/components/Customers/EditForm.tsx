@@ -15,6 +15,18 @@ export default function EditCustomerForm({
   customer: Customer;
   provinces: any[];
 }) {
+  const initialValues = {
+    id: customer.id,
+    fullName: customer.fullName,
+    taxCode: customer.taxCode,
+    urn: customer.urn,
+    street: customer.street,
+    wardCode: customer.wardCode,
+    province: customer.ward.district.province.name,
+    district: customer.ward.district.name,
+    ward: customer.ward.name,
+  };
+
   const [form] = Form.useForm();
   const [districtOptions, setDistrictOptions] = useState([]);
   const [wardOptions, setWardOptions] = useState([]);
@@ -29,19 +41,29 @@ export default function EditCustomerForm({
 
   useEffect(() => {
     form.setFieldsValue(initialValues);
-  }, []);
 
-  const initialValues = {
-    id: customer.id,
-    fullName: customer.fullName,
-    taxCode: customer.taxCode,
-    urn: customer.urn,
-    street: customer.street,
-    wardCode: customer.wardCode,
-    province: customer.ward.district.province.name,
-    district: customer.ward.district.name,
-    ward: customer.ward.name,
-  };
+    const matchProvince = provinces.find(
+      (province: any) => province.name === customer.ward.district.province.name
+    );
+
+    const _districtOptions = matchProvince.districts.map((district: any) => ({
+      value: district.name,
+      label: district.name,
+      wards: district.wards,
+    }));
+    setDistrictOptions(_districtOptions);
+
+    const matchDistrict = matchProvince.districts.find(
+      (district: any) => district.name === customer.ward.district.name
+    );
+
+    const _wardOptions = matchDistrict.wards.map((ward: any) => ({
+      value: ward.name,
+      label: ward.name,
+      wardCode: ward.code,
+    }));
+    setWardOptions(_wardOptions);
+  }, []);
 
   const filterOption = (
     input: string,
@@ -105,7 +127,12 @@ export default function EditCustomerForm({
     setWardCode(option.wardCode);
   };
 
-  const rule = createSchemaFieldRule(CreateCustomerFormSchema);
+  const rule = createSchemaFieldRule(
+    CreateCustomerFormSchema.required({
+      fullName: true,
+      wardCode: true,
+    })
+  );
 
   return (
     <Form
@@ -187,7 +214,16 @@ export default function EditCustomerForm({
       <Form.Item label=" " colon={false} style={{ marginTop: 10 }}>
         <Space>
           <Button type="primary" htmlType="submit" loading={isFormSubmitting}>
-            Tạo
+            Cập nhật
+          </Button>
+
+          <Button
+            type="primary"
+            danger
+            htmlType="button"
+            loading={isFormSubmitting}
+          >
+            Xóa
           </Button>
 
           <Button type="primary" style={{ background: "gray" }}>
