@@ -144,7 +144,7 @@ export default function EditCustomerForm({
       form={form}
       onFinish={onFinish}
     >
-      <Form.Item label="Tên khách hàng">
+      <Form.Item label="Tên khách hàng" required>
         <Form.Item name="fullName" noStyle rules={[rule]}>
           <Input />
         </Form.Item>
@@ -168,7 +168,7 @@ export default function EditCustomerForm({
         </Form.Item>
       </Form.Item>
 
-      <Form.Item label="Tỉnh/TP">
+      <Form.Item label="Tỉnh/TP" required>
         <Form.Item name="province" noStyle>
           <Select
             loading={isProvincesLoading}
@@ -183,7 +183,7 @@ export default function EditCustomerForm({
         </Form.Item>
       </Form.Item>
 
-      <Form.Item label="Quận/Huyện">
+      <Form.Item label="Quận/Huyện" required>
         <Form.Item name="district" noStyle>
           <Select
             notFoundContent="Không tìm thấy"
@@ -197,7 +197,7 @@ export default function EditCustomerForm({
         </Form.Item>
       </Form.Item>
 
-      <Form.Item label="Phường/Xã">
+      <Form.Item label="Phường/Xã" required>
         <Form.Item name="ward" noStyle rules={[rule]}>
           <Select
             notFoundContent="Không tìm thấy"
