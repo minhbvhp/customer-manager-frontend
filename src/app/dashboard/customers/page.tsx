@@ -12,7 +12,18 @@ export default async function CustomerPage() {
     <main>
       <AntdRegistry>
         <Flex justify="space-between" gap="large" vertical>
-          <Flex justify="end">
+          <Flex justify="space-between" align="flex-end">
+            <h2
+              style={{
+                color: "#8E3E63",
+                fontFamily: "cursive",
+                alignItems: "end",
+                padding: 0,
+                margin: 0,
+              }}
+            >
+              Khách hàng
+            </h2>
             <CreateCustomer />
           </Flex>
 

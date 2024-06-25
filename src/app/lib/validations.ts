@@ -1,3 +1,4 @@
+import { REQUIRED_FIELD } from "@/app/lib/messages";
 import z from "zod";
 
 export const CustomerFormSchema = z.object({
@@ -6,16 +7,16 @@ export const CustomerFormSchema = z.object({
   urn: z.string().optional(),
   fullName: z
     .string({
-      required_error: "Tên khách hàng không được bỏ trống",
+      required_error: REQUIRED_FIELD,
     })
-    .min(1, "Tên khách hàng không được bỏ trống"),
+    .min(1, REQUIRED_FIELD),
   street: z.string().optional(),
-  wardCode: z
+  ward: z
     .string({
-      required_error: "Phường/Xã không được bỏ trống",
+      required_error: REQUIRED_FIELD,
       invalid_type_error: "Chưa chọn Phường/Xã",
     })
-    .min(1, "Tên khách hàng không được bỏ trống"),
+    .min(1, REQUIRED_FIELD),
 });
 
 export const CreateCustomerFormSchema = CustomerFormSchema.omit({ id: true });

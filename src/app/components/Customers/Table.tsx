@@ -1,10 +1,10 @@
 "use client";
 import { Customer } from "@/app/lib/definitions";
-import { Button, Input, Space, Table } from "antd";
+import { Button, Input, Space, Table, Badge, Avatar } from "antd";
 import { useEffect, useRef, useState } from "react";
 import type { FilterDropdownProps } from "antd/es/table/interface";
 import type { InputRef, TableColumnsType, TableColumnType } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import { SearchOutlined, UserOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
 import Link from "next/link";
 
@@ -13,6 +13,7 @@ interface DataType {
   fullName: string;
   taxCode: string;
   address: string;
+  contacts: number;
 }
 
 export default function CustomerTable({
@@ -53,6 +54,7 @@ export default function CustomerTable({
     address: customer.street
       ? `${customer.street}, ${customer.ward.fullName}, ${customer.ward.district.fullName}, ${customer.ward.district.province.fullName}`
       : `${customer.ward.fullName}, ${customer.ward.district.fullName}, ${customer.ward.district.province.fullName}`,
+    contacts: customer.contacts?.length ?? 0,
   }));
 
   const arrayAddress = customers.map((customer: any) => ({
@@ -141,7 +143,7 @@ export default function CustomerTable({
 
   const columns: TableColumnsType<DataType> = [
     {
-      title: "Khách hàng",
+      title: "Tên đầy đủ",
       dataIndex: "fullName",
       ...getColumnSearchProps("fullName"),
       render: (_: any, record: DataType) => (
@@ -161,6 +163,26 @@ export default function CustomerTable({
       filters: addressFilter,
       onFilter: (value, record) =>
         record.address.indexOf(value as string) !== -1,
+    },
+    {
+      title: "Người liên hệ",
+      dataIndex: "contacts",
+      render: (_: any, record: DataType) => (
+        <Badge
+          count={record.contacts}
+          showZero
+          color={record.contacts > 0 ? "#52c41a" : "#faad14"}
+        >
+          <Avatar
+            shape="square"
+            style={{
+              color: record.contacts > 0 ? "#52c41a" : "#faad14",
+              backgroundColor: "#f0f0f0",
+            }}
+            icon={<UserOutlined />}
+          />
+        </Badge>
+      ),
     },
   ];
 

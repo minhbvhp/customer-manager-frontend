@@ -99,7 +99,7 @@ export default function CreateCustomerForm({
       form={form}
       onFinish={onFinish}
     >
-      <Form.Item label="Tên khách hàng">
+      <Form.Item label="Tên khách hàng" required>
         <Form.Item name="fullName" noStyle rules={[rule]}>
           <Input />
         </Form.Item>
@@ -152,7 +152,7 @@ export default function CreateCustomerForm({
         </Form.Item>
       </Form.Item>
 
-      <Form.Item label="Phường/Xã">
+      <Form.Item label="Phường/Xã" required>
         <Form.Item name="ward" noStyle rules={[rule]}>
           <Select
             notFoundContent="Không tìm thấy"
