@@ -91,6 +91,8 @@ export default function DashboardLayout({
             orientation="center"
             style={{
               borderColor: "#dfae04",
+              margin: 0,
+              padding: 5,
             }}
           />
           Design ©{new Date().getFullYear()}
