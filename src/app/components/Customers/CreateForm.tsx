@@ -57,6 +57,7 @@ export default function CreateCustomerForm({
       taxCode: values.taxCode,
       urn: values.urn,
       street: values.street,
+      contacts: values.contacts,
       wardCode,
     };
 
@@ -110,13 +111,14 @@ export default function CreateCustomerForm({
           autoComplete="off"
           labelCol={{ span: 7 }}
           wrapperCol={{ span: 16 }}
-          // style={{ maxWidth: 500 }}
           form={form}
           onFinish={onFinish}
         >
           <Row>
             <Col span={24} lg={{ span: 12 }} style={{ padding: "0px 10px" }}>
-              <Divider>Thông tin cơ bản</Divider>
+              <Divider style={{ padding: "0px 20px" }}>
+                Thông tin cơ bản
+              </Divider>
 
               <Form.Item label="Tên đầy đủ" required>
                 <Form.Item name="fullName" noStyle rules={[rule]}>
@@ -142,7 +144,7 @@ export default function CreateCustomerForm({
                 </Form.Item>
               </Form.Item>
 
-              <Form.Item label="Tỉnh/TP">
+              <Form.Item label="Tỉnh/TP" required>
                 <Form.Item name="province" noStyle>
                   <Select
                     loading={isProvincesLoading}
@@ -157,7 +159,7 @@ export default function CreateCustomerForm({
                 </Form.Item>
               </Form.Item>
 
-              <Form.Item label="Quận/Huyện">
+              <Form.Item label="Quận/Huyện" required>
                 <Form.Item name="district" noStyle>
                   <Select
                     notFoundContent="Không tìm thấy"
@@ -193,10 +195,10 @@ export default function CreateCustomerForm({
                 padding: "0px 10px",
               }}
             >
-              <Divider>Khác</Divider>
+              <Divider style={{ padding: "0px 20px" }}>Khác</Divider>
 
-              <div>
-                <Form.List name="users">
+              <div style={{ alignContent: "center" }}>
+                <Form.List name="contacts">
                   {(fields, { add, remove }) => (
                     <>
                       {fields.map(({ key, name, ...restField }) => (
@@ -207,7 +209,7 @@ export default function CreateCustomerForm({
                         >
                           <Form.Item
                             {...restField}
-                            name={[name, "first"]}
+                            name={[name, "name"]}
                             rules={[
                               { required: true, message: "Thông tin bắt buộc" },
                             ]}
@@ -216,7 +218,7 @@ export default function CreateCustomerForm({
                           </Form.Item>
                           <Form.Item
                             {...restField}
-                            name={[name, "last"]}
+                            name={[name, "phone"]}
                             rules={[
                               { required: true, message: "Thông tin bắt buộc" },
                             ]}
@@ -243,23 +245,30 @@ export default function CreateCustomerForm({
             </Col>
           </Row>
 
-          <Divider />
-
-          <Form.Item label=" " colon={false} style={{ marginTop: 10 }}>
-            <Space>
-              <Button
-                type="primary"
-                htmlType="submit"
-                loading={isFormSubmitting}
+          <Row>
+            <Divider />
+            <Col span={24} lg={{ span: 12 }}>
+              <Form.Item
+                label=" "
+                labelCol={{ xs: { span: 0 }, lg: { span: 7 } }}
+                colon={false}
               >
-                Tạo
-              </Button>
+                <Space size={"middle"}>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    loading={isFormSubmitting}
+                  >
+                    Tạo
+                  </Button>
 
-              <Button type="primary" style={{ background: "gray" }}>
-                <Link href="/dashboard/customers/">Hủy</Link>
-              </Button>
-            </Space>
-          </Form.Item>
+                  <Button type="primary" style={{ background: "gray" }}>
+                    <Link href="/dashboard/customers/">Hủy</Link>
+                  </Button>
+                </Space>
+              </Form.Item>
+            </Col>
+          </Row>
         </Form>
       </Col>
     </Row>

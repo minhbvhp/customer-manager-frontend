@@ -84,6 +84,7 @@ export default function EditCustomerForm({
       taxCode: values.taxCode,
       urn: values.urn,
       street: values.street,
+      contacts: values.contacts,
       wardCode,
     };
 
@@ -130,7 +131,7 @@ export default function EditCustomerForm({
   const rule = createSchemaFieldRule(
     CreateCustomerFormSchema.required({
       fullName: true,
-      wardCode: true,
+      ward: true,
     })
   );
 

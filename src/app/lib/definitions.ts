@@ -19,5 +19,6 @@ export type NewCustomer = {
   taxCode: string;
   urn: string;
   street: string;
+  contacts: Contact[];
   wardCode: string;
 };
