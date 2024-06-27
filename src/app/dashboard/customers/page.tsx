@@ -4,6 +4,7 @@ import { CreateCustomer } from "@/app/components/Customers/Button";
 import { fetchAllCustomers } from "@/app/lib/data";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { Suspense } from "react";
+import { shantell } from "@/app/layout";
 
 export default async function CustomerPage() {
   const customers = await fetchAllCustomers();
@@ -14,15 +15,15 @@ export default async function CustomerPage() {
         <Flex justify="space-between" gap="large" vertical>
           <Flex justify="space-between" align="flex-end">
             <h2
+              className={shantell.className}
               style={{
                 color: "#8E3E63",
-                fontFamily: "cursive",
                 alignItems: "end",
                 padding: 0,
                 margin: 0,
               }}
             >
-              Khách hàng
+              KHÁCH HÀNG
             </h2>
             <CreateCustomer />
           </Flex>

@@ -3,14 +3,14 @@ import z from "zod";
 
 export const CustomerFormSchema = z.object({
   id: z.number(),
-  taxCode: z.string().optional(),
-  urn: z.string().optional(),
+  taxCode: z.string().optional().nullish(),
+  urn: z.string().optional().nullish(),
   fullName: z
     .string({
       required_error: REQUIRED_FIELD,
     })
     .min(1, REQUIRED_FIELD),
-  street: z.string().optional(),
+  street: z.string().optional().nullish(),
   ward: z
     .string({
       required_error: REQUIRED_FIELD,
@@ -20,3 +20,5 @@ export const CustomerFormSchema = z.object({
 });
 
 export const CreateCustomerFormSchema = CustomerFormSchema.omit({ id: true });
+
+export const UpdateCustomerFormSchema = CustomerFormSchema.omit({ id: true });

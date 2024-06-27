@@ -5,6 +5,7 @@ import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { Suspense } from "react";
 import EditCustomerForm from "@/app/components/Customers/EditForm";
 import { notFound } from "next/navigation";
+import { shantell } from "@/app/layout";
 
 export default async function DetailCustomerPage({
   params,
@@ -45,7 +46,21 @@ export default async function DetailCustomerPage({
           ]}
         />
 
-        <Divider orientation="left">{customer.fullName.toUpperCase()}</Divider>
+        <Divider style={{ margin: "24px 0px 10px 0px" }} />
+
+        <div style={{ textAlign: "center" }}>
+          <h2
+            className={shantell.className}
+            style={{
+              color: "#8E3E63",
+              alignItems: "end",
+              padding: 0,
+              margin: 15,
+            }}
+          >
+            {customer.fullName.toUpperCase()}
+          </h2>
+        </div>
 
         <Suspense fallback={<Spin size="large" />}>
           <EditCustomerForm customer={customer} provinces={provinces} />

@@ -12,10 +12,10 @@ import {
   Col,
   Row,
 } from "antd";
-import { Customer, NewCustomer } from "@/app/lib/definitions";
+import { Customer, UpdateCustomer } from "@/app/lib/definitions";
 import { createSchemaFieldRule } from "antd-zod";
-import { CreateCustomerFormSchema } from "@/app/lib/validations";
-import { createCustomer } from "@/app/lib/actions";
+import { UpdateCustomerFormSchema } from "@/app/lib/validations";
+import { updateCustomer } from "@/app/lib/actions";
 import { useRouter } from "next/navigation";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 
@@ -36,6 +36,7 @@ export default function EditCustomerForm({
     province: customer.ward.district.province.name,
     district: customer.ward.district.name,
     ward: customer.ward.name,
+    contacts: customer.contacts,
   };
 
   const [form] = Form.useForm();
@@ -74,6 +75,8 @@ export default function EditCustomerForm({
       wardCode: ward.code,
     }));
     setWardOptions(_wardOptions);
+
+    setWardCode(initialValues.wardCode);
   }, []);
 
   const filterOption = (
@@ -90,7 +93,7 @@ export default function EditCustomerForm({
   const onFinish = async (values: any) => {
     setIsFormSubmitting(true);
 
-    const newCustomer: NewCustomer = {
+    const updatingCustomer: UpdateCustomer = {
       fullName: values.fullName,
       taxCode: values.taxCode,
       urn: values.urn,
@@ -99,18 +102,18 @@ export default function EditCustomerForm({
       wardCode,
     };
 
-    // const result = await createCustomer(newCustomer);
+    const result = await updateCustomer(customer.id, updatingCustomer);
 
-    // setIsFormSubmitting(false);
+    setIsFormSubmitting(false);
 
-    // if (result.statusCode) {
-    //   message.error(
-    //     Array.isArray(result.message) ? result.message[0] : result.message
-    //   );
-    // } else {
-    //   message.success(result.message);
-    //   router.push("/dashboard/customers");
-    // }
+    if (result.statusCode) {
+      message.error(
+        Array.isArray(result.message) ? result.message[0] : result.message
+      );
+    } else {
+      message.success(result.message);
+      router.push("/dashboard/customers");
+    }
   };
 
   const onSelectProvince = (value: any, option: any) => {
@@ -140,7 +143,7 @@ export default function EditCustomerForm({
   };
 
   const rule = createSchemaFieldRule(
-    CreateCustomerFormSchema.required({
+    UpdateCustomerFormSchema.required({
       fullName: true,
       ward: true,
     })
@@ -307,6 +310,10 @@ export default function EditCustomerForm({
 
                   <Button type="primary" style={{ background: "gray" }}>
                     <Link href="/dashboard/customers/">Hủy</Link>
+                  </Button>
+
+                  <Button type="primary" danger loading={isFormSubmitting}>
+                    Xóa
                   </Button>
                 </Space>
               </Form.Item>

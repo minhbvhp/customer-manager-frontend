@@ -22,3 +22,12 @@ export type NewCustomer = {
   contacts: Contact[];
   wardCode: string;
 };
+
+export type UpdateCustomer = {
+  fullName: string;
+  taxCode: string;
+  urn: string;
+  street: string;
+  contacts: Contact[];
+  wardCode: string;
+};

@@ -48,8 +48,6 @@ export default function CreateCustomerForm({
   }));
 
   const onFinish = async (values: any) => {
-    console.log(values);
-
     setIsFormSubmitting(true);
 
     const newCustomer: NewCustomer = {
