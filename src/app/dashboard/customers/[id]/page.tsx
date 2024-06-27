@@ -24,32 +24,28 @@ export default async function DetailCustomerPage({
   return (
     <main>
       <AntdRegistry>
-        <Flex justify="space-between" align="center">
-          <Breadcrumb
-            items={[
-              {
-                href: "/dashboard",
-                title: <HomeOutlined />,
-              },
-              {
-                href: "/dashboard/customers",
-                title: (
-                  <>
-                    <UserOutlined />
-                    <span>Khách hàng</span>
-                  </>
-                ),
-              },
-              {
-                title: "Chi tiết",
-              },
-            ]}
-          />
+        <Breadcrumb
+          items={[
+            {
+              href: "/dashboard",
+              title: <HomeOutlined />,
+            },
+            {
+              href: "/dashboard/customers",
+              title: (
+                <>
+                  <UserOutlined />
+                  <span>Khách hàng</span>
+                </>
+              ),
+            },
+            {
+              title: "Chi tiết",
+            },
+          ]}
+        />
 
-          <h3>{customer.fullName.toUpperCase()}</h3>
-        </Flex>
-
-        <Divider />
+        <Divider orientation="left">{customer.fullName.toUpperCase()}</Divider>
 
         <Suspense fallback={<Spin size="large" />}>
           <EditCustomerForm customer={customer} provinces={provinces} />

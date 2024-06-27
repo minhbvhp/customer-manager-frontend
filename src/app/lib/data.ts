@@ -16,7 +16,7 @@ export async function fetchAllCustomers() {
     const url = process.env.BACKEND_URL + "/customers";
     const res = await fetch(url, { cache: "no-store" });
     const allCustomers = await res.json();
-    return allCustomers;
+    return allCustomers.sort((a: any, b: any) => Number(b?.id) - Number(a?.id));
   } catch {
     return [];
   }

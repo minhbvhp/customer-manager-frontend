@@ -1,12 +1,23 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { Form, Input, Select, Button, Space, message } from "antd";
+import {
+  Form,
+  Input,
+  Select,
+  Button,
+  Space,
+  message,
+  Divider,
+  Col,
+  Row,
+} from "antd";
 import { Customer, NewCustomer } from "@/app/lib/definitions";
 import { createSchemaFieldRule } from "antd-zod";
 import { CreateCustomerFormSchema } from "@/app/lib/validations";
 import { createCustomer } from "@/app/lib/actions";
 import { useRouter } from "next/navigation";
+import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 
 export default function EditCustomerForm({
   customer,
@@ -136,102 +147,173 @@ export default function EditCustomerForm({
   );
 
   return (
-    <Form
-      autoCorrect="off"
-      autoComplete="off"
-      labelCol={{ span: 8 }}
-      wrapperCol={{ span: 16 }}
-      style={{ maxWidth: 500 }}
-      form={form}
-      onFinish={onFinish}
-    >
-      <Form.Item label="Tên khách hàng" required>
-        <Form.Item name="fullName" noStyle rules={[rule]}>
-          <Input />
-        </Form.Item>
-      </Form.Item>
+    <Row>
+      <Col span={24}>
+        <Form
+          autoCorrect="off"
+          autoComplete="off"
+          labelCol={{ span: 7 }}
+          wrapperCol={{ span: 16 }}
+          form={form}
+          onFinish={onFinish}
+        >
+          <Row>
+            <Col span={24} lg={{ span: 12 }} style={{ padding: "0px 10px" }}>
+              <Divider style={{ padding: "0px 20px" }}>
+                Thông tin cơ bản
+              </Divider>
 
-      <Form.Item label="Mã số thuế">
-        <Form.Item name="taxCode" noStyle rules={[rule]}>
-          <Input />
-        </Form.Item>
-      </Form.Item>
+              <Form.Item label="Tên đầy đủ" required>
+                <Form.Item name="fullName" noStyle rules={[rule]}>
+                  <Input />
+                </Form.Item>
+              </Form.Item>
 
-      <Form.Item label="Số URN">
-        <Form.Item name="urn" noStyle rules={[rule]}>
-          <Input />
-        </Form.Item>
-      </Form.Item>
+              <Form.Item label="Mã số thuế">
+                <Form.Item name="taxCode" noStyle rules={[rule]}>
+                  <Input />
+                </Form.Item>
+              </Form.Item>
 
-      <Form.Item label="Số nhà/đường">
-        <Form.Item name="street" noStyle rules={[rule]}>
-          <Input />
-        </Form.Item>
-      </Form.Item>
+              <Form.Item label="Số URN">
+                <Form.Item name="urn" noStyle rules={[rule]}>
+                  <Input />
+                </Form.Item>
+              </Form.Item>
 
-      <Form.Item label="Tỉnh/TP" required>
-        <Form.Item name="province" noStyle>
-          <Select
-            loading={isProvincesLoading}
-            notFoundContent="Không tìm thấy"
-            showSearch
-            placeholder="- Chọn -"
-            optionFilterProp="children"
-            filterOption={filterOption}
-            onSelect={onSelectProvince}
-            options={provinceOptions}
-          />
-        </Form.Item>
-      </Form.Item>
+              <Form.Item label="Số nhà/đường">
+                <Form.Item name="street" noStyle rules={[rule]}>
+                  <Input />
+                </Form.Item>
+              </Form.Item>
 
-      <Form.Item label="Quận/Huyện" required>
-        <Form.Item name="district" noStyle>
-          <Select
-            notFoundContent="Không tìm thấy"
-            showSearch
-            placeholder="- Chọn -"
-            optionFilterProp="children"
-            filterOption={filterOption}
-            onSelect={onSelectDistrict}
-            options={districtOptions}
-          />
-        </Form.Item>
-      </Form.Item>
+              <Form.Item label="Tỉnh/TP" required>
+                <Form.Item name="province" noStyle>
+                  <Select
+                    loading={isProvincesLoading}
+                    notFoundContent="Không tìm thấy"
+                    showSearch
+                    placeholder="- Chọn -"
+                    optionFilterProp="children"
+                    filterOption={filterOption}
+                    onSelect={onSelectProvince}
+                    options={provinceOptions}
+                  />
+                </Form.Item>
+              </Form.Item>
 
-      <Form.Item label="Phường/Xã" required>
-        <Form.Item name="ward" noStyle rules={[rule]}>
-          <Select
-            notFoundContent="Không tìm thấy"
-            showSearch
-            placeholder="- Chọn -"
-            optionFilterProp="children"
-            filterOption={filterOption}
-            options={wardOptions}
-            onSelect={onSelectWard}
-          />
-        </Form.Item>
-      </Form.Item>
+              <Form.Item label="Quận/Huyện" required>
+                <Form.Item name="district" noStyle>
+                  <Select
+                    notFoundContent="Không tìm thấy"
+                    showSearch
+                    placeholder="- Chọn -"
+                    optionFilterProp="children"
+                    filterOption={filterOption}
+                    onSelect={onSelectDistrict}
+                    options={districtOptions}
+                  />
+                </Form.Item>
+              </Form.Item>
 
-      <Form.Item label=" " colon={false} style={{ marginTop: 10 }}>
-        <Space>
-          <Button type="primary" htmlType="submit" loading={isFormSubmitting}>
-            Cập nhật
-          </Button>
+              <Form.Item label="Phường/Xã" required>
+                <Form.Item name="ward" noStyle rules={[rule]}>
+                  <Select
+                    notFoundContent="Không tìm thấy"
+                    showSearch
+                    placeholder="- Chọn -"
+                    optionFilterProp="children"
+                    filterOption={filterOption}
+                    options={wardOptions}
+                    onSelect={onSelectWard}
+                  />
+                </Form.Item>
+              </Form.Item>
+            </Col>
 
-          <Button
-            type="primary"
-            danger
-            htmlType="button"
-            loading={isFormSubmitting}
-          >
-            Xóa
-          </Button>
+            <Col
+              span={24}
+              lg={{ span: 12 }}
+              style={{
+                padding: "0px 10px",
+              }}
+            >
+              <Divider style={{ padding: "0px 20px" }}>Khác</Divider>
 
-          <Button type="primary" style={{ background: "gray" }}>
-            <Link href="/dashboard/customers/">Hủy</Link>
-          </Button>
-        </Space>
-      </Form.Item>
-    </Form>
+              <div style={{ alignContent: "center" }}>
+                <Form.List name="contacts">
+                  {(fields, { add, remove }) => (
+                    <>
+                      {fields.map(({ key, name, ...restField }) => (
+                        <Space
+                          key={key}
+                          style={{ display: "flex", marginBottom: 8 }}
+                          align="baseline"
+                        >
+                          <Form.Item
+                            {...restField}
+                            name={[name, "name"]}
+                            rules={[
+                              { required: true, message: "Thông tin bắt buộc" },
+                            ]}
+                          >
+                            <Input placeholder="Tên" />
+                          </Form.Item>
+                          <Form.Item
+                            {...restField}
+                            name={[name, "phone"]}
+                            rules={[
+                              { required: true, message: "Thông tin bắt buộc" },
+                            ]}
+                          >
+                            <Input placeholder="Số điện thoại" />
+                          </Form.Item>
+                          <MinusCircleOutlined onClick={() => remove(name)} />
+                        </Space>
+                      ))}
+                      <Form.Item>
+                        <Button
+                          type="dashed"
+                          onClick={() => add()}
+                          // block
+                          icon={<PlusOutlined />}
+                        >
+                          Thêm người liên hệ
+                        </Button>
+                      </Form.Item>
+                    </>
+                  )}
+                </Form.List>
+              </div>
+            </Col>
+          </Row>
+
+          <Row>
+            <Divider />
+            <Col span={24} lg={{ span: 12 }}>
+              <Form.Item
+                label=" "
+                labelCol={{ xs: { span: 0 }, lg: { span: 7 } }}
+                colon={false}
+              >
+                <Space size={"middle"}>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    loading={isFormSubmitting}
+                  >
+                    Cập nhật
+                  </Button>
+
+                  <Button type="primary" style={{ background: "gray" }}>
+                    <Link href="/dashboard/customers/">Hủy</Link>
+                  </Button>
+                </Space>
+              </Form.Item>
+            </Col>
+          </Row>
+        </Form>
+      </Col>
+    </Row>
   );
 }
