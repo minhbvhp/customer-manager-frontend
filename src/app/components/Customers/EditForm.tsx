@@ -11,11 +11,12 @@ import {
   Divider,
   Col,
   Row,
+  Modal,
 } from "antd";
 import { Customer, UpdateCustomer } from "@/app/lib/definitions";
 import { createSchemaFieldRule } from "antd-zod";
 import { UpdateCustomerFormSchema } from "@/app/lib/validations";
-import { updateCustomer } from "@/app/lib/actions";
+import { deleteCustomer, updateCustomer } from "@/app/lib/actions";
 import { useRouter } from "next/navigation";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 
@@ -26,6 +27,18 @@ export default function EditCustomerForm({
   customer: Customer;
   provinces: any[];
 }) {
+  //#region hook
+  const [form] = Form.useForm();
+  const [districtOptions, setDistrictOptions] = useState([]);
+  const [wardOptions, setWardOptions] = useState([]);
+  const [wardCode, setWardCode] = useState("");
+  const [isProvincesLoading, setIsProvincesLoading] = useState(false);
+  const [isFormSubmitting, setIsFormSubmitting] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const router = useRouter();
+  //#endregion
+
+  //#region set initial values
   const initialValues = {
     id: customer.id,
     fullName: customer.fullName,
@@ -38,14 +51,6 @@ export default function EditCustomerForm({
     ward: customer.ward.name,
     contacts: customer.contacts,
   };
-
-  const [form] = Form.useForm();
-  const [districtOptions, setDistrictOptions] = useState([]);
-  const [wardOptions, setWardOptions] = useState([]);
-  const [wardCode, setWardCode] = useState("");
-  const [isProvincesLoading, setIsProvincesLoading] = useState(false);
-  const [isFormSubmitting, setIsFormSubmitting] = useState(false);
-  const router = useRouter();
 
   useEffect(() => {
     if (!provinces) setIsProvincesLoading(true);
@@ -78,18 +83,9 @@ export default function EditCustomerForm({
 
     setWardCode(initialValues.wardCode);
   }, []);
+  //#endregion
 
-  const filterOption = (
-    input: string,
-    option?: { label: string; value: string }
-  ) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
-
-  const provinceOptions = provinces.map((province: any) => ({
-    value: province.name,
-    label: province.name,
-    districts: province.districts,
-  }));
-
+  //#region submit form update customer
   const onFinish = async (values: any) => {
     setIsFormSubmitting(true);
 
@@ -115,6 +111,20 @@ export default function EditCustomerForm({
       router.push("/dashboard/customers");
     }
   };
+
+  //#endregion
+
+  //#region observe select change
+  const filterOption = (
+    input: string,
+    option?: { label: string; value: string }
+  ) => (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+
+  const provinceOptions = provinces.map((province: any) => ({
+    value: province.name,
+    label: province.name,
+    districts: province.districts,
+  }));
 
   const onSelectProvince = (value: any, option: any) => {
     form.resetFields(["district", "ward"]);
@@ -142,12 +152,43 @@ export default function EditCustomerForm({
     setWardCode(option.wardCode);
   };
 
+  //#endregion
+
+  //#region rule
   const rule = createSchemaFieldRule(
     UpdateCustomerFormSchema.required({
       fullName: true,
       ward: true,
     })
   );
+  //#endregion
+
+  //#region delete customer
+  const showDeleteModal = () => {
+    setOpenDeleteModal(true);
+  };
+
+  const handleDeleteCancel = () => {
+    setOpenDeleteModal(false);
+  };
+
+  const handleDeleteOk = async () => {
+    setIsFormSubmitting(true);
+
+    const result = await deleteCustomer(customer.id);
+
+    setIsFormSubmitting(false);
+
+    if (result.statusCode) {
+      message.error(
+        Array.isArray(result.message) ? result.message[0] : result.message
+      );
+    } else {
+      message.success(result.message);
+      router.push("/dashboard/customers");
+    }
+  };
+  //#endregion
 
   return (
     <Row>
@@ -312,9 +353,27 @@ export default function EditCustomerForm({
                     <Link href="/dashboard/customers/">Hủy</Link>
                   </Button>
 
-                  <Button type="primary" danger loading={isFormSubmitting}>
+                  <Button
+                    type="primary"
+                    danger
+                    onClick={showDeleteModal}
+                    loading={isFormSubmitting}
+                  >
                     Xóa
                   </Button>
+
+                  <Modal
+                    title="Xác nhận xóa ?"
+                    open={openDeleteModal}
+                    onOk={handleDeleteOk}
+                    okText="Xóa"
+                    confirmLoading={isFormSubmitting}
+                    onCancel={handleDeleteCancel}
+                    cancelText="Hủy"
+                    centered
+                  >
+                    <p>Bạn chắc chắn muốn xóa khách hàng này chứ ?</p>
+                  </Modal>
                 </Space>
               </Form.Item>
             </Col>

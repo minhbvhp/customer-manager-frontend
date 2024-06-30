@@ -43,3 +43,23 @@ export async function updateCustomer(id: string, customer: UpdateCustomer) {
     };
   }
 }
+
+export async function deleteCustomer(id: string) {
+  try {
+    const url = process.env.BACKEND_URL + `/customers/${id}`;
+    const res = await fetch(url, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    revalidatePath("/dashboard/customers");
+    return res.json();
+  } catch {
+    return {
+      statusCode: 500,
+      message: "Có lỗi xảy ra. Không thể xóa khách hàng",
+    };
+  }
+}
