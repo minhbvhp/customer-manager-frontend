@@ -1,10 +1,15 @@
 "use client";
-import { Customer } from "@/app/lib/definitions";
-import { Button, Input, Space, Table, Badge, Avatar } from "antd";
+import { Contact, Customer } from "@/app/lib/definitions";
+import { Button, Input, Space, Table, Badge, Avatar, Flex, App } from "antd";
 import { useEffect, useRef, useState } from "react";
 import type { FilterDropdownProps } from "antd/es/table/interface";
 import type { InputRef, TableColumnsType, TableColumnType } from "antd";
-import { SearchOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  SearchOutlined,
+  UserOutlined,
+  EyeOutlined,
+  InfoCircleOutlined,
+} from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
 import Link from "next/link";
 
@@ -12,8 +17,9 @@ interface DataType {
   key: string;
   fullName: string;
   taxCode: string;
+  urn: string;
   address: string;
-  contacts: number;
+  contacts: Contact[];
 }
 
 export default function CustomerTable({
@@ -21,15 +27,19 @@ export default function CustomerTable({
 }: {
   customers: Customer[];
 }) {
+  //#region hook
   const [isLoading, setIsLoading] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const searchInput = useRef<InputRef>(null);
 
   useEffect(() => {
     if (!customers) setIsLoading(true);
   }, [customers]);
+  //#endregion
 
+  //#region customer filter
   const handleSearch = (
     selectedKeys: string[],
     confirm: FilterDropdownProps["confirm"],
@@ -44,28 +54,6 @@ export default function CustomerTable({
     clearFilters();
     setSearchText("");
   };
-
-  type DataIndex = keyof DataType;
-
-  const data: DataType[] = customers.map((customer: any) => ({
-    key: customer.id,
-    fullName: customer.fullName,
-    taxCode: customer.taxCode,
-    address: customer.street
-      ? `${customer.street}, ${customer.ward.fullName}, ${customer.ward.district.fullName}, ${customer.ward.district.province.fullName}`
-      : `${customer.ward.fullName}, ${customer.ward.district.fullName}, ${customer.ward.district.province.fullName}`,
-    contacts: customer.contacts?.length ?? 0,
-  }));
-
-  const arrayAddress = customers.map((customer: any) => ({
-    text: customer.ward.district.province.name,
-    value: customer.ward.district.province.name,
-  }));
-
-  const key = "value";
-  const addressFilter = [
-    ...new Map(arrayAddress.map((item) => [item[key], item])).values(),
-  ];
 
   const getColumnSearchProps = (
     dataIndex: DataIndex
@@ -140,6 +128,33 @@ export default function CustomerTable({
         text
       ),
   });
+  //#endregion
+
+  //#region column data
+
+  type DataIndex = keyof DataType;
+
+  const data: DataType[] = customers.map((customer: any) => ({
+    key: `customer-key-${customer.id}`,
+    customerId: customer.id,
+    fullName: customer.fullName,
+    taxCode: customer.taxCode,
+    address: customer.street
+      ? `${customer.street}, ${customer.ward.fullName}, ${customer.ward.district.fullName}, ${customer.ward.district.province.fullName}`
+      : `${customer.ward.fullName}, ${customer.ward.district.fullName}, ${customer.ward.district.province.fullName}`,
+    contacts: customer.contacts,
+    urn: customer.urn,
+  }));
+
+  const arrayAddress = customers.map((customer: any) => ({
+    text: customer.ward.district.province.name,
+    value: customer.ward.district.province.name,
+  }));
+
+  const key = "value";
+  const addressFilter = [
+    ...new Map(arrayAddress.map((item) => [item[key], item])).values(),
+  ];
 
   const columns: TableColumnsType<DataType> = [
     {
@@ -166,17 +181,18 @@ export default function CustomerTable({
     },
     {
       title: "Người liên hệ",
+      align: "center",
       dataIndex: "contacts",
       render: (_: any, record: DataType) => (
         <Badge
-          count={record.contacts}
+          count={record.contacts?.length}
           showZero
-          color={record.contacts > 0 ? "#52c41a" : "#faad14"}
+          color={record.contacts?.length > 0 ? "#52c41a" : "#faad14"}
         >
           <Avatar
             shape="square"
             style={{
-              color: record.contacts > 0 ? "#52c41a" : "#faad14",
+              color: record.contacts?.length > 0 ? "#52c41a" : "#faad14",
               backgroundColor: "#f0f0f0",
             }}
             icon={<UserOutlined />}
@@ -184,7 +200,42 @@ export default function CustomerTable({
         </Badge>
       ),
     },
+    {
+      title: "Chi tiết",
+      align: "center",
+      render: (_: any, record: DataType) => (
+        <EyeOutlined
+          style={{ cursor: "pointer", color: "#8E3E63", fontSize: "16px" }}
+          onClick={() => showMessage()}
+        />
+      ),
+    },
   ];
+
+  //#endregion
+
+  //#region show customer's detail
+  const { message } = App.useApp();
+
+  const showMessage = () => {
+    message.success("Success!");
+  };
+
+  // const showDetailModal = (record: DataType) => {
+  //   modal.warning({
+  //     title: "Chi tiết khách hàng",
+  //     content: (
+  //       <div>
+  //         <p>{record.fullName}</p>
+  //         <p>{record.address}</p>
+  //         {/* {record.contacts.map((contact: Contact) => {
+  //           return <p>{`${contact.name}: ${contact.phone}`}</p>;
+  //         })} */}
+  //       </div>
+  //     ),
+  //   });
+  // };
+  //#endregion
 
   return (
     <Table

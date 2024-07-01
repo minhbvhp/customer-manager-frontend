@@ -34,7 +34,7 @@ export default function EditCustomerForm({
   const [wardCode, setWardCode] = useState("");
   const [isProvincesLoading, setIsProvincesLoading] = useState(false);
   const [isFormSubmitting, setIsFormSubmitting] = useState(false);
-  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const router = useRouter();
   //#endregion
 
@@ -165,11 +165,11 @@ export default function EditCustomerForm({
 
   //#region delete customer
   const showDeleteModal = () => {
-    setOpenDeleteModal(true);
+    setIsDeleteModalOpen(true);
   };
 
   const handleDeleteCancel = () => {
-    setOpenDeleteModal(false);
+    setIsDeleteModalOpen(false);
   };
 
   const handleDeleteOk = async () => {
@@ -364,7 +364,7 @@ export default function EditCustomerForm({
 
                   <Modal
                     title="Xác nhận xóa ?"
-                    open={openDeleteModal}
+                    open={isDeleteModalOpen}
                     onOk={handleDeleteOk}
                     okText="Xóa"
                     confirmLoading={isFormSubmitting}
