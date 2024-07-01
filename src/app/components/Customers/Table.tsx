@@ -1,5 +1,5 @@
 "use client";
-import { Contact, Customer } from "@/app/lib/definitions";
+import { Contact, Customer, CustomerDataType } from "@/app/lib/definitions";
 import { Button, Input, Space, Table, Badge, Avatar, Flex, App } from "antd";
 import { useEffect, useRef, useState } from "react";
 import type { FilterDropdownProps } from "antd/es/table/interface";
@@ -12,15 +12,6 @@ import {
 } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
 import Link from "next/link";
-
-interface DataType {
-  key: string;
-  fullName: string;
-  taxCode: string;
-  urn: string;
-  address: string;
-  contacts: Contact[];
-}
 
 export default function CustomerTable({
   customers,
@@ -57,7 +48,7 @@ export default function CustomerTable({
 
   const getColumnSearchProps = (
     dataIndex: DataIndex
-  ): TableColumnType<DataType> => ({
+  ): TableColumnType<CustomerDataType> => ({
     filterDropdown: ({
       setSelectedKeys,
       selectedKeys,
@@ -132,9 +123,9 @@ export default function CustomerTable({
 
   //#region column data
 
-  type DataIndex = keyof DataType;
+  type DataIndex = keyof CustomerDataType;
 
-  const data: DataType[] = customers.map((customer: any) => ({
+  const data: CustomerDataType[] = customers.map((customer: any) => ({
     key: `customer-key-${customer.id}`,
     customerId: customer.id,
     fullName: customer.fullName,
@@ -156,13 +147,13 @@ export default function CustomerTable({
     ...new Map(arrayAddress.map((item) => [item[key], item])).values(),
   ];
 
-  const columns: TableColumnsType<DataType> = [
+  const columns: TableColumnsType<CustomerDataType> = [
     {
       title: "Tên đầy đủ",
       dataIndex: "fullName",
       ...getColumnSearchProps("fullName"),
-      render: (_: any, record: DataType) => (
-        <Link href={`/dashboard/customers/${record.key}`}>
+      render: (_: any, record: CustomerDataType) => (
+        <Link href={`/dashboard/customers/${record.customerId}`}>
           {record.fullName}
         </Link>
       ),
@@ -183,7 +174,7 @@ export default function CustomerTable({
       title: "Người liên hệ",
       align: "center",
       dataIndex: "contacts",
-      render: (_: any, record: DataType) => (
+      render: (_: any, record: CustomerDataType) => (
         <Badge
           count={record.contacts?.length}
           showZero
@@ -203,10 +194,10 @@ export default function CustomerTable({
     {
       title: "Chi tiết",
       align: "center",
-      render: (_: any, record: DataType) => (
+      render: (_: any, record: CustomerDataType) => (
         <EyeOutlined
           style={{ cursor: "pointer", color: "#8E3E63", fontSize: "16px" }}
-          onClick={() => showMessage()}
+          onClick={() => showCustomerDetail(record)}
         />
       ),
     },
@@ -215,26 +206,9 @@ export default function CustomerTable({
   //#endregion
 
   //#region show customer's detail
-  const { message } = App.useApp();
-
-  const showMessage = () => {
-    message.success("Success!");
+  const showCustomerDetail = (record: CustomerDataType) => {
+    console.log(record);
   };
-
-  // const showDetailModal = (record: DataType) => {
-  //   modal.warning({
-  //     title: "Chi tiết khách hàng",
-  //     content: (
-  //       <div>
-  //         <p>{record.fullName}</p>
-  //         <p>{record.address}</p>
-  //         {/* {record.contacts.map((contact: Contact) => {
-  //           return <p>{`${contact.name}: ${contact.phone}`}</p>;
-  //         })} */}
-  //       </div>
-  //     ),
-  //   });
-  // };
   //#endregion
 
   return (

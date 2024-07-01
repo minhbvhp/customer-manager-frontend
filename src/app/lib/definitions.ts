@@ -14,6 +14,16 @@ export type Customer = {
   ward: any;
 };
 
+export type CustomerDataType = {
+  key: string;
+  customerId: string;
+  fullName: string;
+  taxCode: string;
+  urn: string;
+  address: string;
+  contacts: Contact[];
+};
+
 export type NewCustomer = {
   fullName: string;
   taxCode: string;
