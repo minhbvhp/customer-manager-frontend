@@ -12,6 +12,7 @@ import {
 } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
 import Link from "next/link";
+import CustomerDetailModal from "@/app/components/Customers/CustomerDetailModal";
 
 export default function CustomerTable({
   customers,
@@ -23,6 +24,15 @@ export default function CustomerTable({
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [customer, setCustomer] = useState<CustomerDataType>({
+    key: "",
+    customerId: "",
+    fullName: "",
+    taxCode: "",
+    urn: "",
+    address: "",
+    contacts: [],
+  });
   const searchInput = useRef<InputRef>(null);
 
   useEffect(() => {
@@ -207,22 +217,31 @@ export default function CustomerTable({
 
   //#region show customer's detail
   const showCustomerDetail = (record: CustomerDataType) => {
-    console.log(record);
+    setCustomer(record);
+    setIsDetailModalOpen(true);
   };
   //#endregion
 
   return (
-    <Table
-      loading={isLoading}
-      pagination={{ pageSize: 5 }}
-      locale={{
-        emptyText: "Không tìm thấy khách hàng",
-        filterReset: "Xóa",
-        filterConfirm: "Lọc",
-      }}
-      columns={columns}
-      dataSource={data}
-      showSorterTooltip={{ target: "sorter-icon" }}
-    />
+    <>
+      <Table
+        loading={isLoading}
+        pagination={{ pageSize: 5 }}
+        locale={{
+          emptyText: "Không tìm thấy khách hàng",
+          filterReset: "Xóa",
+          filterConfirm: "Lọc",
+        }}
+        columns={columns}
+        dataSource={data}
+        showSorterTooltip={{ target: "sorter-icon" }}
+      />
+
+      <CustomerDetailModal
+        customer={customer}
+        setIsDetailModalOpen={setIsDetailModalOpen}
+        isDetailModalOpen={isDetailModalOpen}
+      />
+    </>
   );
 }
