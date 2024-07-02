@@ -1,6 +1,6 @@
 "use client";
 import { Contact, Customer, CustomerDataType } from "@/app/lib/definitions";
-import { Button, Input, Space, Table, Badge, Avatar, Flex, App } from "antd";
+import { Button, Input, Space, Table, Badge, Avatar, theme } from "antd";
 import { useEffect, useRef, useState } from "react";
 import type { FilterDropdownProps } from "antd/es/table/interface";
 import type { InputRef, TableColumnsType, TableColumnType } from "antd";
@@ -19,6 +19,10 @@ export default function CustomerTable({
 }: {
   customers: Customer[];
 }) {
+  const {
+    token: { colorPrimary },
+  } = theme.useToken();
+
   //#region hook
   const [isLoading, setIsLoading] = useState(false);
   const [searchText, setSearchText] = useState("");
@@ -186,7 +190,7 @@ export default function CustomerTable({
       dataIndex: "contacts",
       render: (_: any, record: CustomerDataType) => (
         <Badge
-          count={record.contacts?.length}
+          count={record.contacts?.length ?? "0"}
           showZero
           color={record.contacts?.length > 0 ? "#52c41a" : "#faad14"}
         >
@@ -206,7 +210,7 @@ export default function CustomerTable({
       align: "center",
       render: (_: any, record: CustomerDataType) => (
         <EyeOutlined
-          style={{ cursor: "pointer", color: "#8E3E63", fontSize: "16px" }}
+          style={{ cursor: "pointer", color: colorPrimary, fontSize: "16px" }}
           onClick={() => showCustomerDetail(record)}
         />
       ),
