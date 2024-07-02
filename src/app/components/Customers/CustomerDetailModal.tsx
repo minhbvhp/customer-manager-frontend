@@ -82,9 +82,10 @@ export default function CustomerDetailModal({
         </Flex>
 
         <Flex gap={"middle"} vertical>
-          {customer.contacts?.map((contact: Contact) => {
+          {customer.contacts?.map((contact: Contact, index) => {
             return (
               <CopyToClipboardInput
+                key={`customer-contacts-${index}`}
                 value={`${contact.name} - ${contact.phone}`}
                 prefixIcon={
                   <ContactsOutlined style={{ padding: "0px 5px 0px 0px" }} />
