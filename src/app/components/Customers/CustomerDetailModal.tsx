@@ -2,8 +2,9 @@ import { Contact, CustomerDataType } from "@/app/lib/definitions";
 import { Modal, Button, Space, Divider, theme, Flex, Input } from "antd";
 import {
   InfoCircleOutlined,
-  CopyOutlined,
-  UserOutlined,
+  ContactsOutlined,
+  EnvironmentOutlined,
+  HomeOutlined,
 } from "@ant-design/icons";
 import CopyToClipboardInput from "@/app/components/Customers/CopyToClipboardInput";
 
@@ -53,12 +54,14 @@ export default function CustomerDetailModal({
         <Flex justify="flex-start" gap={"middle"} vertical>
           <CopyToClipboardInput
             value={customer.fullName}
-            prefixIcon={<UserOutlined style={{ padding: "0px 5px 0px 0px" }} />}
+            prefixIcon={<HomeOutlined style={{ padding: "0px 5px 0px 0px" }} />}
           />
 
           <CopyToClipboardInput
             value={customer.address}
-            prefixIcon={<UserOutlined style={{ padding: "0px 5px 0px 0px" }} />}
+            prefixIcon={
+              <EnvironmentOutlined style={{ padding: "0px 5px 0px 0px" }} />
+            }
           />
         </Flex>
 
@@ -68,7 +71,7 @@ export default function CustomerDetailModal({
               <CopyToClipboardInput
                 value={`${contact.name} - ${contact.phone}`}
                 prefixIcon={
-                  <UserOutlined style={{ padding: "0px 5px 0px 0px" }} />
+                  <ContactsOutlined style={{ padding: "0px 5px 0px 0px" }} />
                 }
               />
             );

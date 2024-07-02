@@ -13,7 +13,14 @@ export default function CopyToClipboardInput({
 
   const handleClick = () => {
     navigator.clipboard.writeText(value);
-    setCopyIcon(<CheckOutlined style={{ color: "green" }} />);
+
+    setTimeout(() => {
+      setCopyIcon(<CheckOutlined style={{ color: "green" }} />);
+    }, 200);
+
+    setTimeout(() => {
+      message.success("Đã copy");
+    }, 200);
 
     setTimeout(() => {
       setCopyIcon(<CopyOutlined />);
