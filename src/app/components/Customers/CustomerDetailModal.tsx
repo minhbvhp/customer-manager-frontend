@@ -5,6 +5,7 @@ import {
   CopyOutlined,
   UserOutlined,
 } from "@ant-design/icons";
+import CopyToClipboardInput from "@/app/components/Customers/CopyToClipboardInput";
 
 export default function CustomerDetailModal({
   customer,
@@ -30,9 +31,7 @@ export default function CustomerDetailModal({
         <>
           <Space size={"middle"}>
             <InfoCircleOutlined style={{ color: colorPrimary, fontSize: 18 }} />
-            <span style={{ color: colorPrimary, fontSize: 16 }}>
-              Chi tiết khách hàng
-            </span>
+            <span style={{ color: colorPrimary, fontSize: 16 }}>Chi tiết</span>
           </Space>
           <Divider style={{ margin: "10px 0px 25px 0px" }} />
         </>
@@ -52,42 +51,26 @@ export default function CustomerDetailModal({
     >
       <Flex justify="space-between">
         <Flex justify="flex-start" gap={"middle"} vertical>
-          <Space.Compact>
-            <Input
-              defaultValue={customer.fullName}
-              disabled
-              prefix={<UserOutlined style={{ padding: "0px 5px" }} />}
-            />
-            <Button>
-              <CopyOutlined />
-            </Button>
-          </Space.Compact>
+          <CopyToClipboardInput
+            value={customer.fullName}
+            prefixIcon={<UserOutlined style={{ padding: "0px 5px 0px 0px" }} />}
+          />
 
-          <Space.Compact>
-            <Input
-              defaultValue={customer.address}
-              disabled
-              prefix={<UserOutlined style={{ padding: "0px 5px" }} />}
-            />
-            <Button>
-              <CopyOutlined />
-            </Button>
-          </Space.Compact>
+          <CopyToClipboardInput
+            value={customer.address}
+            prefixIcon={<UserOutlined style={{ padding: "0px 5px 0px 0px" }} />}
+          />
         </Flex>
 
         <Flex gap={"middle"} vertical>
           {customer.contacts?.map((contact: Contact) => {
             return (
-              <Space.Compact>
-                <Input
-                  defaultValue={`${contact.name} - ${contact.phone}`}
-                  disabled
-                  prefix={<UserOutlined style={{ padding: "0px 5px" }} />}
-                />
-                <Button>
-                  <CopyOutlined />
-                </Button>
-              </Space.Compact>
+              <CopyToClipboardInput
+                value={`${contact.name} - ${contact.phone}`}
+                prefixIcon={
+                  <UserOutlined style={{ padding: "0px 5px 0px 0px" }} />
+                }
+              />
             );
           })}
         </Flex>

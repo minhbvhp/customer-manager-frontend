@@ -230,7 +230,6 @@ export default function CreateCustomerForm({
                         <Button
                           type="dashed"
                           onClick={() => add()}
-                          // block
                           icon={<PlusOutlined />}
                         >
                           Thêm người liên hệ

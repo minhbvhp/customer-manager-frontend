@@ -211,7 +211,9 @@ export default function CustomerTable({
       render: (_: any, record: CustomerDataType) => (
         <EyeOutlined
           style={{ cursor: "pointer", color: colorPrimary, fontSize: "16px" }}
-          onClick={() => showCustomerDetail(record)}
+          onClick={() => {
+            showCustomerDetail(record);
+          }}
         />
       ),
     },
