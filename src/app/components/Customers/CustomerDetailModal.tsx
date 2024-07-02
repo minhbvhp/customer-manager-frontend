@@ -5,6 +5,8 @@ import {
   ContactsOutlined,
   EnvironmentOutlined,
   HomeOutlined,
+  FieldNumberOutlined,
+  NumberOutlined,
 } from "@ant-design/icons";
 import CopyToClipboardInput from "@/app/components/Customers/CopyToClipboardInput";
 
@@ -27,7 +29,7 @@ export default function CustomerDetailModal({
 
   return (
     <Modal
-      width={600}
+      width={650}
       title={
         <>
           <Space size={"middle"}>
@@ -61,6 +63,20 @@ export default function CustomerDetailModal({
             value={customer.address}
             prefixIcon={
               <EnvironmentOutlined style={{ padding: "0px 5px 0px 0px" }} />
+            }
+          />
+
+          <CopyToClipboardInput
+            value={customer.taxCode}
+            prefixIcon={
+              <FieldNumberOutlined style={{ padding: "0px 5px 0px 0px" }} />
+            }
+          />
+
+          <CopyToClipboardInput
+            value={customer.urn}
+            prefixIcon={
+              <NumberOutlined style={{ padding: "0px 5px 0px 0px" }} />
             }
           />
         </Flex>
