@@ -18,7 +18,7 @@ export default function LoginPage() {
               alignItems: "center",
               height: "100vh",
               backgroundImage:
-                "linear-gradient(90deg, rgba(69,53,193,1) 0%, rgba(71,140,207,1) 35%, rgba(119,228,200,1) 100%)",
+                "linear-gradient(90deg, rgba(77,134,156,1) 0%, rgba(122,178,178,1) 36%, rgba(205,232,229,1) 100%)",
             }}
           >
             <Flex
@@ -31,7 +31,7 @@ export default function LoginPage() {
                 style={{
                   minWidth: 300,
                   justifyContent: "center",
-                  boxShadow: "2px 2px 2px 2px #77E4C8",
+                  boxShadow: "5px 5px 5px #8E3E63",
                 }}
               >
                 <LoginForm />

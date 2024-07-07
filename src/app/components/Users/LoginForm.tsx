@@ -19,7 +19,7 @@ const LoginForm: React.FC = () => {
         <h2
           style={{
             color: "#8E3E63",
-            margin: "30px 0px",
+            margin: "20px 0px 50px 0px",
           }}
         >
           ĐĂNG NHẬP
@@ -50,13 +50,9 @@ const LoginForm: React.FC = () => {
         <Form.Item name="remember" valuePropName="checked" noStyle>
           <Checkbox>Lưu phiên đăng nhập</Checkbox>
         </Form.Item>
-
-        <p style={{ margin: 0 }}>
-          <a href="">Quên mật khẩu</a>
-        </p>
       </Form.Item>
 
-      <Form.Item>
+      <Form.Item style={{ textAlign: "center" }}>
         <Button type="primary" htmlType="submit">
           Đăng nhập
         </Button>
