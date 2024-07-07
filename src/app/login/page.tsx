@@ -1,64 +1,45 @@
-"use client";
+import type { Metadata } from "next";
+import { AntdRegistry } from "@ant-design/nextjs-registry";
+import LoginForm from "@/app/components/Users/LoginForm";
+import { Card, Flex } from "antd";
 
-import React from "react";
-import type { FormProps } from "antd";
-import { Button, Checkbox, Form, Input } from "antd";
-
-type FieldType = {
-  username?: string;
-  password?: string;
-  remember?: string;
+export const metadata: Metadata = {
+  title: "Login",
 };
 
-const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-  console.log("Success:", values);
-};
-
-const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
-  console.log("Failed:", errorInfo);
-};
-
-const LoginForm: React.FC = () => (
-  <Form
-    name="basic"
-    labelCol={{ span: 8 }}
-    wrapperCol={{ span: 16 }}
-    style={{ maxWidth: 600 }}
-    initialValues={{ remember: true }}
-    onFinish={onFinish}
-    onFinishFailed={onFinishFailed}
-    autoComplete="off"
-  >
-    <Form.Item<FieldType>
-      label="Username"
-      name="username"
-      rules={[{ required: true, message: "Please input your username!" }]}
-    >
-      <Input />
-    </Form.Item>
-
-    <Form.Item<FieldType>
-      label="Password"
-      name="password"
-      rules={[{ required: true, message: "Please input your password!" }]}
-    >
-      <Input.Password />
-    </Form.Item>
-
-    <Form.Item<FieldType>
-      name="remember"
-      valuePropName="checked"
-      wrapperCol={{ offset: 8, span: 16 }}
-    >
-      <Checkbox>Remember me</Checkbox>
-    </Form.Item>
-
-    <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-      <Button type="primary" htmlType="submit">
-        Submit
-      </Button>
-    </Form.Item>
-  </Form>
-);
-
-export default LoginForm;
+export default function LoginPage() {
+  return (
+    <main>
+      <AntdRegistry>
+        <main>
+          <Flex
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100vh",
+              backgroundImage:
+                "linear-gradient(90deg, rgba(69,53,193,1) 0%, rgba(71,140,207,1) 35%, rgba(119,228,200,1) 100%)",
+            }}
+          >
+            <Flex
+              style={{
+                backgroundColor: "transparent",
+              }}
+            >
+              <Card
+                bordered={false}
+                style={{
+                  minWidth: 300,
+                  justifyContent: "center",
+                  boxShadow: "2px 2px 2px 2px #77E4C8",
+                }}
+              >
+                <LoginForm />
+              </Card>
+            </Flex>
+          </Flex>
+        </main>
+      </AntdRegistry>
+    </main>
+  );
+}
