@@ -10,8 +10,6 @@ const LoginForm: React.FC = () => {
   const [isFormSubmitting, setIsFormSubmitting] = useState(false);
 
   const onFinish = async (values: any) => {
-    console.log(values);
-
     setIsFormSubmitting(true);
 
     const payload: LoginPayload = {
@@ -23,12 +21,32 @@ const LoginForm: React.FC = () => {
 
     setIsFormSubmitting(false);
 
-    console.log(result);
-
     if (result.statusCode) {
       message.error(
         Array.isArray(result.message) ? result.message[0] : result.message
       );
+    } else {
+      const resultFromNextServer = await fetch("/api/auth", {
+        method: "POST",
+        body: JSON.stringify(result),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then(async (res) => {
+        const payload = await res.json();
+        const data = {
+          status: res.status,
+          payload,
+        };
+
+        if (!res.ok) {
+          throw data;
+        }
+
+        return data;
+      });
+
+      console.log(resultFromNextServer);
     }
   };
 

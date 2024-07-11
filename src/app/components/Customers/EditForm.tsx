@@ -46,9 +46,9 @@ export default function EditCustomerForm({
     urn: customer.urn,
     street: customer.street,
     wardCode: customer.wardCode,
-    province: customer.ward.district.province.name,
-    district: customer.ward.district.name,
-    ward: customer.ward.name,
+    province: customer.ward?.district?.province?.name,
+    district: customer.ward?.district?.name,
+    ward: customer.ward?.name,
     contacts: customer.contacts,
   };
 
@@ -60,21 +60,22 @@ export default function EditCustomerForm({
     form.setFieldsValue(initialValues);
 
     const matchProvince = provinces.find(
-      (province: any) => province.name === customer.ward.district.province.name
+      (province: any) =>
+        province.name === customer.ward?.district?.province?.name
     );
 
-    const _districtOptions = matchProvince.districts.map((district: any) => ({
+    const _districtOptions = matchProvince?.districts.map((district: any) => ({
       value: district.name,
       label: district.name,
       wards: district.wards,
     }));
     setDistrictOptions(_districtOptions);
 
-    const matchDistrict = matchProvince.districts.find(
+    const matchDistrict = matchProvince?.districts.find(
       (district: any) => district.name === customer.ward.district.name
     );
 
-    const _wardOptions = matchDistrict.wards.map((ward: any) => ({
+    const _wardOptions = matchDistrict?.wards.map((ward: any) => ({
       value: ward.name,
       label: ward.name,
       wardCode: ward.code,

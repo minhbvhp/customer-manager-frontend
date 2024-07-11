@@ -5,6 +5,10 @@ import {
   UpdateCustomer,
 } from "@/app/lib/definitions";
 import { revalidatePath } from "next/cache";
+import { cookies } from "next/headers";
+
+const cookieStore = cookies();
+const sessionToken = cookieStore.get("sessionToken");
 
 export async function createCustomer(customer: NewCustomer) {
   try {
@@ -14,10 +18,12 @@ export async function createCustomer(customer: NewCustomer) {
       body: JSON.stringify(customer),
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionToken?.value}`,
       },
     });
 
     revalidatePath("/dashboard/customers");
+
     return res.json();
   } catch {
     return {

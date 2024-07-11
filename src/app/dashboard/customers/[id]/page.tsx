@@ -58,7 +58,7 @@ export default async function DetailCustomerPage({
               margin: 15,
             }}
           >
-            {customer.fullName.toUpperCase()}
+            {customer.fullName?.toUpperCase()}
           </h2>
         </div>
 

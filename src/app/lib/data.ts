@@ -1,4 +1,7 @@
-import { custom } from "zod";
+import { cookies } from "next/headers";
+
+const cookieStore = cookies();
+const sessionToken = cookieStore.get("sessionToken");
 
 export async function fetchAllProvinces() {
   try {
@@ -14,7 +17,13 @@ export async function fetchAllProvinces() {
 export async function fetchAllCustomers() {
   try {
     const url = process.env.BACKEND_URL + "/customers";
-    const res = await fetch(url, { cache: "no-store" });
+    const res = await fetch(url, {
+      cache: "no-store",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${sessionToken?.value}`,
+      },
+    });
     const allCustomers = await res.json();
     return allCustomers.sort((a: any, b: any) => Number(b?.id) - Number(a?.id));
   } catch {
