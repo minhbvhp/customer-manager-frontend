@@ -1,5 +1,9 @@
 "use server";
-import { NewCustomer, UpdateCustomer } from "@/app/lib/definitions";
+import {
+  LoginPayload,
+  NewCustomer,
+  UpdateCustomer,
+} from "@/app/lib/definitions";
 import { revalidatePath } from "next/cache";
 
 export async function createCustomer(customer: NewCustomer) {
@@ -60,6 +64,26 @@ export async function deleteCustomer(id: string) {
     return {
       statusCode: 500,
       message: "Có lỗi xảy ra. Không thể xóa khách hàng",
+    };
+  }
+}
+
+export async function login(payload: LoginPayload) {
+  try {
+    const url = process.env.BACKEND_URL + "/auth/login";
+    const res = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify(payload),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    return res.json();
+  } catch {
+    return {
+      statusCode: 500,
+      message: "Có lỗi xảy ra. Không thể đăng nhập",
     };
   }
 }

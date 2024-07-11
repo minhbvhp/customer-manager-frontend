@@ -1,12 +1,35 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { LockOutlined, MailOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Form, Input, Flex, Divider } from "antd";
+import { Button, Checkbox, Form, Input, Flex, message } from "antd";
+import { LoginPayload } from "@/app/lib/definitions";
+import { login } from "@/app/lib/actions";
 
 const LoginForm: React.FC = () => {
-  const onFinish = (values: any) => {
-    console.log("Received values of form: ", values);
+  const [isFormSubmitting, setIsFormSubmitting] = useState(false);
+
+  const onFinish = async (values: any) => {
+    console.log(values);
+
+    setIsFormSubmitting(true);
+
+    const payload: LoginPayload = {
+      email: values.email,
+      password: values.password,
+    };
+
+    const result = await login(payload);
+
+    setIsFormSubmitting(false);
+
+    console.log(result);
+
+    if (result.statusCode) {
+      message.error(
+        Array.isArray(result.message) ? result.message[0] : result.message
+      );
+    }
   };
 
   return (
@@ -27,9 +50,9 @@ const LoginForm: React.FC = () => {
       </Flex>
 
       <Form.Item
-        name="username"
+        name="email"
         style={{ margin: "0px 0px 40px 0px" }}
-        rules={[{ required: true, message: "Hãy nhập email" }]}
+        rules={[{ required: true, type: "email", message: "Hãy nhập email" }]}
       >
         <Input prefix={<MailOutlined />} placeholder="Email" />
       </Form.Item>
@@ -53,7 +76,7 @@ const LoginForm: React.FC = () => {
       </Form.Item>
 
       <Form.Item style={{ textAlign: "center" }}>
-        <Button type="primary" htmlType="submit">
+        <Button type="primary" htmlType="submit" loading={isFormSubmitting}>
           Đăng nhập
         </Button>
       </Form.Item>

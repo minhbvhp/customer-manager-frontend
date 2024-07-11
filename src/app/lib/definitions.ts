@@ -41,3 +41,8 @@ export type UpdateCustomer = {
   contacts: Contact[];
   wardCode: string;
 };
+
+export type LoginPayload = {
+  email: string;
+  password: string;
+};
