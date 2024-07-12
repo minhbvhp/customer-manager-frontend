@@ -5,9 +5,11 @@ import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input, Flex, message } from "antd";
 import { LoginPayload } from "@/app/lib/definitions";
 import { login } from "@/app/lib/actions";
+import { useRouter } from "next/navigation";
 
 const LoginForm: React.FC = () => {
   const [isFormSubmitting, setIsFormSubmitting] = useState(false);
+  const router = useRouter();
 
   const onFinish = async (values: any) => {
     setIsFormSubmitting(true);
@@ -46,7 +48,7 @@ const LoginForm: React.FC = () => {
         return data;
       });
 
-      console.log(resultFromNextServer);
+      router.push("/dashboard");
     }
   };
 
