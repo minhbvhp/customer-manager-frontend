@@ -1,11 +1,11 @@
 export async function POST(request: Request) {
   const res = await request.json();
 
-  const sessionToken = res.jwtToken;
+  const accessToken = res.jwtToken;
 
-  if (!sessionToken) {
+  if (!accessToken) {
     return Response.json(
-      { message: "Không thể lưu phiên đăng nhập" },
+      { message: "Có lỗi xảy ra. Không thể lưu phiên đăng nhập" },
       {
         status: 400,
       }
@@ -17,7 +17,7 @@ export async function POST(request: Request) {
     {
       status: 200,
       headers: {
-        "Set-Cookie": `sessionToken=${sessionToken}; Path=/; HttpOnly`,
+        "Set-Cookie": `accessToken=${accessToken}; Path=/; HttpOnly`,
       },
     }
   );

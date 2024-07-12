@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 
 const cookieStore = cookies();
-const sessionToken = cookieStore.get("sessionToken");
+const accessToken = cookieStore.get("accessToken");
 
 export async function fetchAllProvinces() {
   try {
@@ -21,7 +21,7 @@ export async function fetchAllCustomers() {
       cache: "no-store",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${sessionToken?.value}`,
+        Authorization: `Bearer ${accessToken?.value}`,
       },
     });
     const allCustomers = await res.json();
