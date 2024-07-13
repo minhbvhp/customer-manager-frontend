@@ -6,9 +6,9 @@ import {
 } from "@/app/lib/definitions";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
+import { jwtDecode } from "jwt-decode";
 
-const cookieStore = cookies();
-const accessToken = cookieStore.get("accessToken");
+const accessToken = cookies().get("accessToken");
 
 export async function createCustomer(customer: NewCustomer) {
   try {
@@ -85,7 +85,30 @@ export async function login(payload: LoginPayload) {
       },
     });
 
-    return res.json();
+    const parsedRes = await res.json();
+    const { jwtToken, refreshToken } = parsedRes;
+
+    const accessTokenDecode = jwtDecode(jwtToken);
+
+    const refreshTokenDecode = jwtDecode(refreshToken);
+
+    cookies().set({
+      name: "accessToken",
+      value: parsedRes.jwtToken,
+      secure: true,
+      httpOnly: true,
+      expires: new Date(accessTokenDecode.exp! * 1000),
+    });
+
+    cookies().set({
+      name: "refreshToken",
+      value: parsedRes.refreshToken,
+      secure: true,
+      httpOnly: true,
+      expires: new Date(refreshTokenDecode.exp! * 1000),
+    });
+
+    return parsedRes;
   } catch {
     return {
       statusCode: 500,

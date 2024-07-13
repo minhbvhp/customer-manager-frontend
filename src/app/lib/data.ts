@@ -1,7 +1,6 @@
 import { cookies } from "next/headers";
 
-const cookieStore = cookies();
-const accessToken = cookieStore.get("accessToken");
+const accessToken = cookies().get("accessToken");
 
 export async function fetchAllProvinces() {
   try {

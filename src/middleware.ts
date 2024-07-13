@@ -10,7 +10,6 @@ export function middleware(request: NextRequest) {
   const accessToken = request.cookies?.get("accessToken")?.value;
 
   const decoded = accessToken ? jwtDecode(accessToken) : "";
-  console.log(decoded);
 
   //Check if need login
   if (privatePaths.some((path) => pathname.startsWith(path)) && !accessToken) {
