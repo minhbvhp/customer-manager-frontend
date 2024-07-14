@@ -7,19 +7,20 @@ import {
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { jwtDecode } from "jwt-decode";
-
-const accessToken = cookies().get("accessToken");
+import fetchWithCredentials from "@/app/utils/auth/fetchWithCredentials";
+import { NextRequest } from "next/server";
 
 export async function createCustomer(customer: NewCustomer) {
+  const accessToken = cookies().get("accessToken");
   try {
     const url = process.env.BACKEND_URL + "/customers";
     const res = await fetch(url, {
       method: "POST",
       body: JSON.stringify(customer),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken?.value}`,
-      },
+      // headers: {
+      //   "Content-Type": "application/json",
+      //   Authorization: `Bearer ${accessToken?.value}`,
+      // },
     });
 
     revalidatePath("/dashboard/customers");
@@ -35,12 +36,14 @@ export async function createCustomer(customer: NewCustomer) {
 
 export async function updateCustomer(id: string, customer: UpdateCustomer) {
   try {
+    const accessToken = cookies().get("accessToken");
     const url = process.env.BACKEND_URL + `/customers/${id}`;
     const res = await fetch(url, {
       method: "PATCH",
       body: JSON.stringify(customer),
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken?.value}`,
       },
     });
 
@@ -56,12 +59,14 @@ export async function updateCustomer(id: string, customer: UpdateCustomer) {
 
 export async function deleteCustomer(id: string) {
   try {
+    const accessToken = await cookies().get("accessToken");
     const url = process.env.BACKEND_URL + `/customers/${id}`;
     const res = await fetch(url, {
       method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      // headers: {
+      //   "Content-Type": "application/json",
+      //   Authorization: `Bearer ${accessToken?.value}`,
+      // },
     });
 
     revalidatePath("/dashboard/customers");
@@ -86,15 +91,15 @@ export async function login(payload: LoginPayload) {
     });
 
     const parsedRes = await res.json();
-    const { jwtToken, refreshToken } = parsedRes;
+    const { accessToken, refreshToken } = parsedRes;
 
-    const accessTokenDecode = jwtDecode(jwtToken);
+    const accessTokenDecode = jwtDecode(accessToken);
 
     const refreshTokenDecode = jwtDecode(refreshToken);
 
     cookies().set({
       name: "accessToken",
-      value: parsedRes.jwtToken,
+      value: accessToken,
       secure: true,
       httpOnly: true,
       expires: new Date(accessTokenDecode.exp! * 1000),
@@ -102,7 +107,7 @@ export async function login(payload: LoginPayload) {
 
     cookies().set({
       name: "refreshToken",
-      value: parsedRes.refreshToken,
+      value: refreshToken,
       secure: true,
       httpOnly: true,
       expires: new Date(refreshTokenDecode.exp! * 1000),

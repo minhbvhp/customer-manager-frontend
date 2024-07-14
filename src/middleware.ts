@@ -1,29 +1,31 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { jwtDecode } from "jwt-decode";
-import { cookies } from "next/headers";
+import { getUsersToken } from "@/app/utils/auth/getUserTokens";
 
 const privatePaths = ["/dashboard"];
 const authPaths = ["/login"];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const accessTokenFromCookie = request.cookies?.get("accessToken")?.value;
-  const refreshTokenFromCookie = request.cookies?.get("refreshToken")?.value;
+  const userTokens = getUsersToken(request);
+
+  const accessTokenFromRequest = userTokens?.accessToken;
+  const refreshTokenFromRequest = userTokens?.refreshToken;
 
   //Check if login require
   if (privatePaths.some((path) => pathname.startsWith(path))) {
-    if (!accessTokenFromCookie && !refreshTokenFromCookie) {
+    if (!accessTokenFromRequest && !refreshTokenFromRequest) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
 
-    if (!accessTokenFromCookie && refreshTokenFromCookie) {
+    if (!accessTokenFromRequest && refreshTokenFromRequest) {
       try {
         const url = process.env.BACKEND_URL + "/auth/refresh";
         const res = await fetch(url, {
           method: "POST",
           body: JSON.stringify({
-            refreshToken: refreshTokenFromCookie,
+            refreshToken: refreshTokenFromRequest,
           }),
           headers: {
             "Content-Type": "application/json",
@@ -32,11 +34,9 @@ export async function middleware(request: NextRequest) {
 
         const parsedRes = await res.json();
 
-        console.log(parsedRes);
+        const { accessToken, refreshToken } = parsedRes;
 
-        const { jwtToken, refreshToken } = parsedRes;
-
-        const accessTokenDecode = jwtDecode(jwtToken);
+        const accessTokenDecode = jwtDecode(accessToken);
 
         const refreshTokenDecode = jwtDecode(refreshToken);
 
@@ -44,7 +44,7 @@ export async function middleware(request: NextRequest) {
 
         response.cookies.set({
           name: "accessToken",
-          value: jwtToken,
+          value: accessToken,
           secure: true,
           httpOnly: true,
           expires: new Date(accessTokenDecode.exp! * 1000),

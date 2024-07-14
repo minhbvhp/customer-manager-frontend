@@ -46,3 +46,8 @@ export type LoginPayload = {
   email: string;
   password: string;
 };
+
+export type UserCredentials = {
+  accessToken: string;
+  refreshToken: string;
+};

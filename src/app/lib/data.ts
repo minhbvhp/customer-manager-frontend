@@ -1,7 +1,5 @@
 import { cookies } from "next/headers";
 
-const accessToken = cookies().get("accessToken");
-
 export async function fetchAllProvinces() {
   try {
     const url = process.env.BACKEND_URL + "/addresses";
@@ -15,6 +13,7 @@ export async function fetchAllProvinces() {
 
 export async function fetchAllCustomers() {
   try {
+    const accessToken = cookies().get("accessToken");
     const url = process.env.BACKEND_URL + "/customers";
     const res = await fetch(url, {
       cache: "no-store",
@@ -32,8 +31,15 @@ export async function fetchAllCustomers() {
 
 export async function fetchCustomerById(id: string) {
   try {
+    const accessToken = cookies().get("accessToken");
     const url = process.env.BACKEND_URL + `/customers/${id}`;
-    const res = await fetch(url, { cache: "no-store" });
+    const res = await fetch(url, {
+      cache: "no-store",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken?.value}`,
+      },
+    });
     const customer: any = await res.json();
 
     if (customer.statusCode === 404) {
