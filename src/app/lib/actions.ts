@@ -7,8 +7,6 @@ import {
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { jwtDecode } from "jwt-decode";
-import fetchWithCredentials from "@/app/utils/auth/fetchWithCredentials";
-import { NextRequest } from "next/server";
 
 export async function createCustomer(customer: NewCustomer) {
   const accessToken = cookies().get("accessToken");
@@ -17,10 +15,10 @@ export async function createCustomer(customer: NewCustomer) {
     const res = await fetch(url, {
       method: "POST",
       body: JSON.stringify(customer),
-      // headers: {
-      //   "Content-Type": "application/json",
-      //   Authorization: `Bearer ${accessToken?.value}`,
-      // },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken?.value}`,
+      },
     });
 
     revalidatePath("/dashboard/customers");
@@ -63,10 +61,10 @@ export async function deleteCustomer(id: string) {
     const url = process.env.BACKEND_URL + `/customers/${id}`;
     const res = await fetch(url, {
       method: "DELETE",
-      // headers: {
-      //   "Content-Type": "application/json",
-      //   Authorization: `Bearer ${accessToken?.value}`,
-      // },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken?.value}`,
+      },
     });
 
     revalidatePath("/dashboard/customers");

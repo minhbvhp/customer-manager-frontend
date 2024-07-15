@@ -1,17 +1,14 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { jwtDecode } from "jwt-decode";
-import { getUsersToken } from "@/app/utils/auth/getUserTokens";
 
 const privatePaths = ["/dashboard"];
 const authPaths = ["/login"];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const userTokens = getUsersToken(request);
-
-  const accessTokenFromRequest = userTokens?.accessToken;
-  const refreshTokenFromRequest = userTokens?.refreshToken;
+  const accessTokenFromRequest = request.cookies?.get("accessToken")?.value;
+  const refreshTokenFromRequest = request.cookies?.get("refreshToken")?.value;
 
   //Check if login require
   if (privatePaths.some((path) => pathname.startsWith(path))) {
@@ -40,7 +37,8 @@ export async function middleware(request: NextRequest) {
 
         const refreshTokenDecode = jwtDecode(refreshToken);
 
-        const response = NextResponse.next();
+        request.headers.set("Authorization", `Bearer ${accessToken}`);
+        const response = NextResponse.redirect(request.nextUrl, request);
 
         response.cookies.set({
           name: "accessToken",
