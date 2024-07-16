@@ -1,12 +1,9 @@
-
 import { Avatar } from "antd";
-import { useEffect } from "react";
 
-export default function UserIcon() {
-  
+export default function UserIcon({ userName }: { userName: string }) {
   return (
     <Avatar style={{ verticalAlign: "middle" }} size="large">
-      AA
+      {userName}
     </Avatar>
   );
 }

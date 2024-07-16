@@ -1,9 +1,10 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FundFilled, SettingOutlined } from "@ant-design/icons";
-import { Layout, Divider, Avatar, Space, theme } from "antd";
+import { Layout, Divider, Space, theme } from "antd";
 import DashboardMenu from "@/app/components/Dashboard/Menu";
 import UserIcon from "@/app/components/Users/UserIcon";
+import { getUserProfile } from "@/app/lib/data";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -15,6 +16,18 @@ export default function DashboardLayout({
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
+
+  const [userName, setUserName] = useState("N/A");
+  const [isLoading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/getUserName")
+      .then((res) => res.json())
+      .then((data) => {
+        setUserName(data.userName);
+        setLoading(false);
+      });
+  }, []);
 
   return (
     <Layout>
@@ -62,7 +75,7 @@ export default function DashboardLayout({
               }}
             />
 
-            <UserIcon />
+            <UserIcon userName={userName} />
           </Space>
         </Header>
 
