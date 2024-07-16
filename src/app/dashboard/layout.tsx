@@ -3,6 +3,7 @@ import React from "react";
 import { FundFilled, SettingOutlined } from "@ant-design/icons";
 import { Layout, Divider, Avatar, Space, theme } from "antd";
 import DashboardMenu from "@/app/components/Dashboard/Menu";
+import UserIcon from "@/app/components/Users/UserIcon";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -61,9 +62,7 @@ export default function DashboardLayout({
               }}
             />
 
-            <Avatar style={{ verticalAlign: "middle" }} size="large">
-              User
-            </Avatar>
+            <UserIcon />
           </Space>
         </Header>
 

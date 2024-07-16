@@ -40,7 +40,7 @@ export async function fetchCustomerById(id: string) {
         Authorization: `Bearer ${accessToken?.value}`,
       },
     });
-    const customer: any = await res.json();
+    const customer = await res.json();
 
     if (customer.statusCode === 404) {
       return null;
@@ -49,5 +49,28 @@ export async function fetchCustomerById(id: string) {
     return customer;
   } catch {
     return {};
+  }
+}
+
+export async function getUserProfile() {
+  try {
+    const accessToken = cookies().get("accessToken");
+    const url = process.env.BACKEND_URL + `/profile`;
+    const res = await fetch(url, {
+      cache: "no-store",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken?.value}`,
+      },
+    });
+    const userProfile = await res.json();
+
+    if (userProfile.statusCode === 404) {
+      return "N/A";
+    }
+
+    return userProfile.name;
+  } catch {
+    return "N/A";
   }
 }

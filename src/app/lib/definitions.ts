@@ -51,3 +51,12 @@ export type UserCredentials = {
   accessToken: string;
   refreshToken: string;
 };
+
+export type JwtDecodedPayload = {
+  sub: string;
+  email: string;
+  role: string;
+  name: string;
+  iat: number;
+  exp: number;
+};
