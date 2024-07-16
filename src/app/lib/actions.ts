@@ -89,6 +89,7 @@ export async function login(payload: LoginPayload) {
     });
 
     const parsedRes = await res.json();
+
     const { accessToken, refreshToken } = parsedRes;
 
     const accessTokenDecode = jwtDecode(accessToken);
@@ -100,7 +101,9 @@ export async function login(payload: LoginPayload) {
       value: accessToken,
       secure: true,
       httpOnly: true,
-      expires: new Date(accessTokenDecode.exp! * 1000),
+      expires: payload.remember
+        ? new Date(accessTokenDecode.exp! * 1000)
+        : undefined,
     });
 
     cookies().set({
@@ -108,7 +111,9 @@ export async function login(payload: LoginPayload) {
       value: refreshToken,
       secure: true,
       httpOnly: true,
-      expires: new Date(refreshTokenDecode.exp! * 1000),
+      expires: payload.remember
+        ? new Date(refreshTokenDecode.exp! * 1000)
+        : undefined,
     });
 
     return parsedRes;

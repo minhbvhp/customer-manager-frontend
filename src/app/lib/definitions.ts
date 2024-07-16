@@ -45,6 +45,7 @@ export type UpdateCustomer = {
 export type LoginPayload = {
   email: string;
   password: string;
+  remember: boolean;
 };
 
 export type UserCredentials = {

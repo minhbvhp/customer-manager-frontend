@@ -17,6 +17,7 @@ const LoginForm: React.FC = () => {
     const payload: LoginPayload = {
       email: values.email,
       password: values.password,
+      remember: values.remember,
     };
 
     const result = await login(payload);
@@ -35,7 +36,7 @@ const LoginForm: React.FC = () => {
   return (
     <Form
       name="normal_login"
-      initialValues={{ remember: true }}
+      initialValues={{ remember: false }}
       onFinish={onFinish}
     >
       <Flex justify="center">
