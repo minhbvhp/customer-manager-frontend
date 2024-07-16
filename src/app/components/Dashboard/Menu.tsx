@@ -1,9 +1,5 @@
 "use client";
-import {
-  UserOutlined,
-  HomeOutlined,
-  FileTextOutlined,
-} from "@ant-design/icons";
+import { IdcardOutlined, FileTextOutlined } from "@ant-design/icons";
 import { Menu } from "antd";
 import type { GetProp, MenuProps } from "antd";
 import { usePathname, useRouter } from "next/navigation";
@@ -15,7 +11,7 @@ const items: MenuItem[] = [
   {
     key: "/dashboard/customers",
     label: "Khách hàng",
-    icon: <UserOutlined />,
+    icon: <IdcardOutlined />,
   },
   {
     key: "/dashboard/policies",

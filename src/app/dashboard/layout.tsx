@@ -1,10 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { FundFilled } from "@ant-design/icons";
+import { FundFilled, GithubOutlined } from "@ant-design/icons";
 import { Layout, Divider, Space, theme, Spin, Button } from "antd";
 import DashboardMenu from "@/app/components/Dashboard/Menu";
 import UserName from "@/app/components/Users/UserName";
 import Logout from "@/app/components/Users/Logout";
+import Link from "next/link";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -103,7 +104,19 @@ export default function DashboardLayout({
               padding: 5,
             }}
           />
-          Design ©{new Date().getFullYear()}
+          <Link href="https://github.com/minhbvhp" style={{ color: "black" }}>
+            <span style={{ margin: "0px 10px 0px 0px", fontSize: 18 }}>
+              Minh TK
+            </span>
+
+            <GithubOutlined
+              style={{ margin: "0px 10px 0px 0px", fontSize: 20 }}
+            />
+
+            <span style={{ margin: "0px 10px 0px 0px", fontSize: 18 }}>
+              2024
+            </span>
+          </Link>
         </Footer>
       </Layout>
     </Layout>

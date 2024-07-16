@@ -65,12 +65,8 @@ export async function getUserProfile() {
     });
     const userProfile = await res.json();
 
-    if (userProfile.statusCode === 404) {
-      return "N/A";
-    }
-
-    return userProfile.name;
+    return userProfile;
   } catch {
-    return "N/A";
+    return null;
   }
 }

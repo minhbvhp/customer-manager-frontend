@@ -31,7 +31,7 @@ export default function Dashboard() {
           </div>
         </Flex>
 
-        <Flex style={{ margin: 25 }}>
+        <Flex style={{ margin: 25, alignItems: "center" }}>
           <Image src="/avatar.webp" preview={false} />
         </Flex>
       </Flex>
