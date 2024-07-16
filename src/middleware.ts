@@ -37,8 +37,7 @@ export async function middleware(request: NextRequest) {
 
         const refreshTokenDecode = jwtDecode(refreshToken);
 
-        request.headers.set("Authorization", `Bearer ${accessToken}`);
-        const response = NextResponse.redirect(request.nextUrl, request);
+        const response = NextResponse.redirect(request.nextUrl);
 
         response.cookies.set({
           name: "accessToken",
