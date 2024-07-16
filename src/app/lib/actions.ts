@@ -119,3 +119,27 @@ export async function login(payload: LoginPayload) {
     };
   }
 }
+
+export async function logOut() {
+  try {
+    const accessToken = cookies().get("accessToken");
+    const url = process.env.BACKEND_URL + `/auth/logout`;
+    const res = await fetch(url, {
+      cache: "no-store",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken?.value}`,
+      },
+    });
+
+    cookies().delete("accessToken");
+    cookies().delete("refreshToken");
+
+    return await res.json();
+  } catch {
+    return {
+      statusCode: 500,
+      message: "Có lỗi xảy ra!",
+    };
+  }
+}

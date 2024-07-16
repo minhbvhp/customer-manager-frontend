@@ -1,10 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { FundFilled, SettingOutlined } from "@ant-design/icons";
-import { Layout, Divider, Space, theme } from "antd";
+import { FundFilled } from "@ant-design/icons";
+import { Layout, Divider, Space, theme, Spin, Button } from "antd";
 import DashboardMenu from "@/app/components/Dashboard/Menu";
-import UserIcon from "@/app/components/Users/UserIcon";
-import { getUserProfile } from "@/app/lib/data";
+import UserName from "@/app/components/Users/UserName";
+import Logout from "@/app/components/Users/Logout";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -17,15 +17,18 @@ export default function DashboardLayout({
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
-  const [userName, setUserName] = useState("N/A");
-  const [isLoading, setLoading] = useState(true);
+  const [userName, setUserName] = useState("");
+  const [isUserFetching, setIsUserFetching] = useState(true);
+
+  useEffect(() => {
+    setIsUserFetching(false);
+  }, [userName]);
 
   useEffect(() => {
     fetch("/api/getUserName")
       .then((res) => res.json())
       .then((data) => {
-        setUserName(data.userName);
-        setLoading(false);
+        setUserName(data?.userName);
       });
   }, []);
 
@@ -66,16 +69,9 @@ export default function DashboardLayout({
             boxShadow: "rgba(0, 0, 0, 0.2) 0px 15px 10px -15px",
           }}
         >
-          <Space>
-            <SettingOutlined
-              style={{
-                fontSize: "30px",
-                display: "inline-block",
-                verticalAlign: "middle",
-              }}
-            />
-
-            <UserIcon userName={userName} />
+          <Space size={"large"}>
+            <Logout />
+            {isUserFetching ? <Spin /> : <UserName userName={userName} />}
           </Space>
         </Header>
 
