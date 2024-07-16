@@ -13,11 +13,6 @@ type MenuItem = GetProp<MenuProps, "items">[number];
 
 const items: MenuItem[] = [
   {
-    key: "/dashboard",
-    label: "Trang chủ",
-    icon: <HomeOutlined />,
-  },
-  {
     key: "/dashboard/customers",
     label: "Khách hàng",
     icon: <UserOutlined />,
