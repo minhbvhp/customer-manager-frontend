@@ -5,7 +5,7 @@ import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { Suspense } from "react";
 import EditCustomerForm from "@/app/components/Customers/EditForm";
 import { notFound } from "next/navigation";
-import { shantell } from "@/app/layout";
+import { shantell } from "@/app/utils/fontSetting";
 
 export default async function DetailCustomerPage({
   params,

@@ -3,11 +3,6 @@ import { Inter, Shantell_Sans } from "next/font/google";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { ConfigProvider } from "antd";
 
-export const shantell = Shantell_Sans({
-  subsets: ["vietnamese"],
-  weight: "600",
-});
-
 const inter = Inter({ subsets: ["vietnamese"] });
 
 export const metadata: Metadata = {

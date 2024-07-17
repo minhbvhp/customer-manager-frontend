@@ -90,32 +90,33 @@ export async function login(payload: LoginPayload) {
 
     const parsedRes = await res.json();
 
-    const { accessToken, refreshToken } = parsedRes;
+    if ("accessToken" in parsedRes) {
+      const { accessToken, refreshToken } = parsedRes;
 
-    const accessTokenDecode = jwtDecode(accessToken);
+      const accessTokenDecode = jwtDecode(accessToken);
 
-    const refreshTokenDecode = jwtDecode(refreshToken);
+      const refreshTokenDecode = jwtDecode(refreshToken);
 
-    cookies().set({
-      name: "accessToken",
-      value: accessToken,
-      secure: true,
-      httpOnly: true,
-      expires: payload.remember
-        ? new Date(accessTokenDecode.exp! * 1000)
-        : undefined,
-    });
+      cookies().set({
+        name: "accessToken",
+        value: accessToken,
+        secure: false,
+        httpOnly: true,
+        expires: payload.remember
+          ? new Date(accessTokenDecode.exp! * 1000)
+          : undefined,
+      });
 
-    cookies().set({
-      name: "refreshToken",
-      value: refreshToken,
-      secure: true,
-      httpOnly: true,
-      expires: payload.remember
-        ? new Date(refreshTokenDecode.exp! * 1000)
-        : undefined,
-    });
-
+      cookies().set({
+        name: "refreshToken",
+        value: refreshToken,
+        secure: false,
+        httpOnly: true,
+        expires: payload.remember
+          ? new Date(refreshTokenDecode.exp! * 1000)
+          : undefined,
+      });
+    }
     return parsedRes;
   } catch {
     return {

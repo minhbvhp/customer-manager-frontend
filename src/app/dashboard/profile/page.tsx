@@ -5,7 +5,7 @@ import {
   UserOutlined,
   ApartmentOutlined,
 } from "@ant-design/icons";
-import { shantell } from "@/app/layout";
+import { shantell } from "@/app/utils/fontSetting";
 import { getUserProfile } from "@/app/lib/data";
 
 export default async function CustomerPage() {

@@ -4,7 +4,7 @@ import { CreateCustomer } from "@/app/components/Customers/Button";
 import { fetchAllCustomers } from "@/app/lib/data";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { Suspense } from "react";
-import { shantell } from "@/app/layout";
+import { shantell } from "@/app/utils/fontSetting";
 
 export default async function CustomerPage() {
   const customers = await fetchAllCustomers();

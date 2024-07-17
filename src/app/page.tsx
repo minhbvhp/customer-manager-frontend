@@ -42,8 +42,13 @@ export default function Home() {
               <ul style={{ fontSize: 18, lineHeight: 1.7 }}>
                 <li>Tạo mới khách hàng</li>
                 <li>Chỉnh sửa thông tin khách hàng</li>
+                <li>Xóa khách hàng</li>
                 <li>Thêm, cập nhật thông tin người liên hệ của khách hàng</li>
-                <li>Tìm kiếm, lọc thông tin khách hàng</li>
+                <li>
+                  Tìm kiếm, lọc thông tin khách hàng (theo tên, địa chỉ, tỉnh
+                  thành, mã số thuế)
+                </li>
+                <li>Copy thông tin chi tiết của khách hàng vào clipboard</li>
               </ul>
             </div>
 

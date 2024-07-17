@@ -42,7 +42,7 @@ export async function middleware(request: NextRequest) {
         response.cookies.set({
           name: "accessToken",
           value: accessToken,
-          secure: true,
+          secure: false,
           httpOnly: true,
           expires: new Date(accessTokenDecode.exp! * 1000),
         });
@@ -50,7 +50,7 @@ export async function middleware(request: NextRequest) {
         response.cookies.set({
           name: "refreshToken",
           value: refreshToken,
-          secure: true,
+          secure: false,
           httpOnly: true,
           expires: new Date(refreshTokenDecode.exp! * 1000),
         });
