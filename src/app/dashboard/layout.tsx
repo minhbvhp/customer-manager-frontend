@@ -67,6 +67,7 @@ export default function DashboardLayout({
             position: "sticky",
             zIndex: 100,
             top: 0,
+            minWidth: 300,
             boxShadow: "rgba(0, 0, 0, 0.2) 0px 15px 10px -15px",
           }}
         >
