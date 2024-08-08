@@ -1,36 +1,24 @@
 "use client";
-import { IdcardOutlined, FileTextOutlined } from "@ant-design/icons";
+import {
+  IdcardOutlined,
+  FileTextOutlined,
+  KeyOutlined,
+} from "@ant-design/icons";
 import { Menu } from "antd";
 import type { GetProp, MenuProps } from "antd";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useLayoutEffect } from "react";
 
 type MenuItem = GetProp<MenuProps, "items">[number];
 
-const items: MenuItem[] = [
-  {
-    key: "/dashboard/customers",
-    label: "Khách hàng",
-    icon: <IdcardOutlined />,
-  },
-  {
-    key: "/dashboard/policies",
-    label: "Đơn bảo hiểm",
-    icon: <FileTextOutlined />,
-  },
-];
-
-const DashboardMenu: React.FC = () => {
+export default function DashboardMenu() {
   const pathname = usePathname();
   const router = useRouter();
 
+  const [userRole, setUserRole] = useState("");
   const [current, setCurrent] = useState(
     pathname === "/" || pathname === "" ? "/dashboard" : pathname
   );
-
-  function handleClick(e: any) {
-    router.push(e.key);
-  }
 
   useEffect(() => {
     if (pathname) {
@@ -40,6 +28,38 @@ const DashboardMenu: React.FC = () => {
     }
   }, [pathname, current]);
 
+  useLayoutEffect(() => {
+    fetch("/api/getUser")
+      .then((res) => res.json())
+      .then((data) => {
+        setUserRole(data?.user?.role);
+      });
+  }, []);
+
+  const items: MenuItem[] = [
+    {
+      key: "/dashboard/customers",
+      label: "Khách hàng",
+      icon: <IdcardOutlined />,
+    },
+    {
+      key: "/dashboard/policies",
+      label: "Đơn bảo hiểm",
+      icon: <FileTextOutlined />,
+    },
+    userRole === "admin"
+      ? {
+          key: "/dashboard/admin",
+          label: "Admin",
+          icon: <KeyOutlined />,
+        }
+      : null,
+  ];
+
+  function handleClick(e: any) {
+    router.push(e.key);
+  }
+
   return (
     <Menu
       mode="inline"
@@ -48,6 +68,4 @@ const DashboardMenu: React.FC = () => {
       onClick={handleClick}
     />
   );
-};
-
-export default DashboardMenu;
+}

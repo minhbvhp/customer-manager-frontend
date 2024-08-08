@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { FundFilled, GithubOutlined } from "@ant-design/icons";
 import { Layout, Divider, Space, theme, Spin, Button } from "antd";
 import DashboardMenu from "@/app/components/Dashboard/Menu";
-import UserName from "@/app/components/Users/UserName";
+import User from "@/app/components/Users/UserName";
 import Logout from "@/app/components/Users/Logout";
 import Link from "next/link";
 
@@ -18,18 +18,18 @@ export default function DashboardLayout({
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
-  const [userName, setUserName] = useState("");
+  const [user, setUser] = useState({});
   const [isUserFetching, setIsUserFetching] = useState(true);
 
   useEffect(() => {
     setIsUserFetching(false);
-  }, [userName]);
+  }, [user]);
 
   useEffect(() => {
-    fetch("/api/getUserName")
+    fetch("/api/getUser")
       .then((res) => res.json())
       .then((data) => {
-        setUserName(data?.userName);
+        setUser(data?.user);
       });
   }, []);
 
@@ -73,7 +73,7 @@ export default function DashboardLayout({
         >
           <Space size={"large"}>
             <Logout />
-            {isUserFetching ? <Spin /> : <UserName userName={userName} />}
+            {isUserFetching ? <Spin /> : <User user={user} />}
           </Space>
         </Header>
 
