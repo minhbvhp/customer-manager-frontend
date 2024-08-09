@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { jwtDecode } from "jwt-decode";
+import { JwtDecodedPayload } from "@/app/lib/definitions";
 
 const privatePaths = ["/dashboard"];
 const authPaths = ["/login"];
@@ -16,6 +17,7 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
 
+    //refresh tokens
     if (!accessTokenFromRequest && refreshTokenFromRequest) {
       try {
         const url = process.env.BACKEND_URL + "/auth/refresh";
@@ -58,6 +60,16 @@ export async function middleware(request: NextRequest) {
         return response;
       } catch {
         return NextResponse.redirect(new URL("/login", request.url));
+      }
+    }
+
+    //admin route
+    if (accessTokenFromRequest && pathname.includes("admin")) {
+      const accessTokenFromRequestDecode = jwtDecode(
+        accessTokenFromRequest
+      ) as JwtDecodedPayload;
+      if (accessTokenFromRequestDecode?.role !== "admin") {
+        return NextResponse.redirect(new URL("/dashboard", request.url));
       }
     }
   }
