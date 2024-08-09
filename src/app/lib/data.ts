@@ -70,3 +70,21 @@ export async function getUserProfile() {
     return null;
   }
 }
+
+export async function fetchAllUsers() {
+  try {
+    const accessToken = cookies().get("accessToken");
+    const url = process.env.BACKEND_URL + "/users";
+    const res = await fetch(url, {
+      cache: "no-store",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken?.value}`,
+      },
+    });
+    const allUsers = await res.json();
+    return allUsers;
+  } catch {
+    return [];
+  }
+}

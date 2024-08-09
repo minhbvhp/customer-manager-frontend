@@ -61,3 +61,16 @@ export type JwtDecodedPayload = {
   iat: number;
   exp: number;
 };
+
+export type User = {
+  id: string;
+  name: string;
+  email: string;
+};
+
+export type UserDataType = {
+  key: string;
+  userId: string;
+  name: string;
+  email: string;
+};
