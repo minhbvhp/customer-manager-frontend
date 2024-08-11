@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { ConfigProvider } from "antd";
 
 export const metadata: Metadata = {
-  title: "Quản trị",
+  title: "Admin",
 };
 
 export default function UserListLayout({

@@ -4,6 +4,7 @@ import { HomeOutlined, KeyOutlined } from "@ant-design/icons";
 import { Breadcrumb, Divider, Spin } from "antd";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { Suspense } from "react";
+import CreateUserForm from "@/app/components/Users/CreateUserForm";
 
 export default async function CreateUserPage() {
   return (
@@ -31,6 +32,8 @@ export default async function CreateUserPage() {
         />
 
         <Divider />
+
+        <CreateUserForm />
       </AntdRegistry>
     </main>
   );

@@ -74,3 +74,9 @@ export type UserDataType = {
   name: string;
   email: string;
 };
+
+export type NewUser = {
+  email: string;
+  name: string;
+  password: string;
+};

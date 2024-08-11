@@ -19,6 +19,18 @@ export const CustomerFormSchema = z.object({
     .min(1, REQUIRED_FIELD),
 });
 
+export const UserFormSchema = z.object({
+  email: z.string().min(1, REQUIRED_FIELD).email("Nhập đúng định dạng email"),
+  name: z
+    .string({
+      required_error: REQUIRED_FIELD,
+    })
+    .min(1, REQUIRED_FIELD),
+  password: z.string().min(1, REQUIRED_FIELD),
+});
+
 export const CreateCustomerFormSchema = CustomerFormSchema.omit({ id: true });
 
 export const UpdateCustomerFormSchema = CustomerFormSchema.omit({ id: true });
+
+export const CreateUserFormSchema = UserFormSchema;
