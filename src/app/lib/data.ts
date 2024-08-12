@@ -88,3 +88,26 @@ export async function fetchAllUsers() {
     return [];
   }
 }
+
+export async function fetchUserById(id: string) {
+  try {
+    const accessToken = cookies().get("accessToken");
+    const url = process.env.BACKEND_URL + `/users/${id}`;
+    const res = await fetch(url, {
+      cache: "no-store",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken?.value}`,
+      },
+    });
+    const user = await res.json();
+
+    if (user.statusCode === 404) {
+      return null;
+    }
+
+    return user;
+  } catch {
+    return {};
+  }
+}

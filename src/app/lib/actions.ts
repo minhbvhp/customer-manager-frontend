@@ -4,6 +4,7 @@ import {
   NewCustomer,
   NewUser,
   UpdateCustomer,
+  UpdateUser,
 } from "@/app/lib/definitions";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
@@ -171,6 +172,51 @@ export async function createUser(user: NewUser) {
     return {
       statusCode: 500,
       message: "Có lỗi xảy ra. Không tạo được người dùng mới",
+    };
+  }
+}
+
+export async function updateUser(id: string, user: UpdateUser) {
+  try {
+    const accessToken = cookies().get("accessToken");
+    const url = process.env.BACKEND_URL + `/users/${id}`;
+    const res = await fetch(url, {
+      method: "PATCH",
+      body: JSON.stringify(user),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken?.value}`,
+      },
+    });
+
+    revalidatePath("/dashboard/admin");
+    return res.json();
+  } catch {
+    return {
+      statusCode: 500,
+      message: "Có lỗi xảy ra. Không thể cập nhật thông tin người dùng",
+    };
+  }
+}
+
+export async function deleteUser(id: string) {
+  try {
+    const accessToken = await cookies().get("accessToken");
+    const url = process.env.BACKEND_URL + `/users/${id}`;
+    const res = await fetch(url, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken?.value}`,
+      },
+    });
+
+    revalidatePath("/dashboard/admin");
+    return res.json();
+  } catch {
+    return {
+      statusCode: 500,
+      message: "Có lỗi xảy ra. Không thể xóa người dùng",
     };
   }
 }

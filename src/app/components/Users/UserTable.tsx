@@ -2,10 +2,17 @@
 
 import { User, UserDataType } from "@/app/lib/definitions";
 import type { TableColumnsType } from "antd";
-import { Table, Space, Button } from "antd";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { Table } from "antd";
+import { useEffect, useState } from "react";
+import Link from "next/link";
 
 export default function UserTable({ users }: { users: User[] }) {
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (!users) setIsLoading(true);
+  }, [users]);
+
   const data: UserDataType[] = users.map((user: any) => ({
     key: `user-key-${user.id}`,
     userId: user.id,
@@ -17,35 +24,20 @@ export default function UserTable({ users }: { users: User[] }) {
     {
       title: "Tên người dùng",
       dataIndex: "name",
+      render: (_: any, record: UserDataType) => (
+        <Link href={`/dashboard/admin/users/${record.userId}`}>
+          {record.name}
+        </Link>
+      ),
     },
     {
       title: "Email",
       dataIndex: "email",
     },
-    {
-      title: "Thao tác",
-      render: (_, record) => (
-        <Space>
-          <Button
-            shape="circle"
-            icon={<EditOutlined />}
-            type="text"
-            style={{ color: "orange" }}
-          />
-
-          <Button
-            shape="circle"
-            icon={<DeleteOutlined />}
-            type="text"
-            style={{ color: "red" }}
-          />
-        </Space>
-      ),
-    },
   ];
   return (
     <Table
-      // loading={isLoading}
+      loading={isLoading}
       pagination={{ pageSize: 8 }}
       locale={{
         emptyText: "Không tìm thấy người dùng",

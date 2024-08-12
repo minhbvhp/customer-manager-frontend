@@ -66,6 +66,7 @@ export type User = {
   id: string;
   name: string;
   email: string;
+  roleId: number;
 };
 
 export type UserDataType = {
@@ -79,4 +80,9 @@ export type NewUser = {
   email: string;
   name: string;
   password: string;
+};
+
+export type UpdateUser = {
+  name: string;
+  roleId: number;
 };
