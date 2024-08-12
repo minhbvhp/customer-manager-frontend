@@ -2,6 +2,7 @@
 import {
   LoginPayload,
   NewCustomer,
+  NewUser,
   UpdateCustomer,
 } from "@/app/lib/definitions";
 import { revalidatePath } from "next/cache";
@@ -146,6 +147,30 @@ export async function logOut() {
     return {
       statusCode: 500,
       message: "Có lỗi xảy ra!",
+    };
+  }
+}
+
+export async function createUser(user: NewUser) {
+  const accessToken = cookies().get("accessToken");
+  try {
+    const url = process.env.BACKEND_URL + "/users";
+    const res = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify(user),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken?.value}`,
+      },
+    });
+
+    revalidatePath("/dashboard/admin");
+
+    return res.json();
+  } catch {
+    return {
+      statusCode: 500,
+      message: "Có lỗi xảy ra. Không tạo được người dùng mới",
     };
   }
 }
