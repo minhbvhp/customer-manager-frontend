@@ -10,7 +10,9 @@ export default function NotFound() {
         subTitle="Không thể tìm thấy khách hàng này"
         extra={
           <Button type="primary">
-            <Link href="/dashboard/customers">Quay lại</Link>
+            <Link href="/dashboard/customers" prefetch={false}>
+              Quay lại
+            </Link>
           </Button>
         }
       />

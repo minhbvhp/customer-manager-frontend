@@ -34,7 +34,7 @@ export default function UserTable({ users }: { users: User[] }) {
       title: "Tên người dùng",
       dataIndex: "name",
       render: (_: any, record: UserDataType) => (
-        <Link href={`/dashboard/admin/users/${record.userId}`}>
+        <Link href={`/dashboard/admin/users/${record.userId}`} prefetch={false}>
           {record.name}
         </Link>
       ),

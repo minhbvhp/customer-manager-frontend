@@ -260,7 +260,9 @@ export default function CreateCustomerForm({
                   </Button>
 
                   <Button type="primary" style={{ background: "gray" }}>
-                    <Link href="/dashboard/customers/">Hủy</Link>
+                    <Link href="/dashboard/customers/" prefetch={false}>
+                      Hủy
+                    </Link>
                   </Button>
                 </Space>
               </Form.Item>

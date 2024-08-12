@@ -351,7 +351,9 @@ export default function EditCustomerForm({
                   </Button>
 
                   <Button type="primary" style={{ background: "gray" }}>
-                    <Link href="/dashboard/customers/">Hủy</Link>
+                    <Link href="/dashboard/customers/" prefetch={false}>
+                      Hủy
+                    </Link>
                   </Button>
 
                   <Button
