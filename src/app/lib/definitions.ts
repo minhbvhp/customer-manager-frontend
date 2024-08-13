@@ -85,3 +85,7 @@ export type NewUser = {
 export type UpdateUser = {
   name: string;
 };
+
+export type ResetUserPassword = {
+  password: string;
+};

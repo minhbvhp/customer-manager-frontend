@@ -108,7 +108,7 @@ export default function EditUserForm({ user }: { user: User }) {
           </Button>
 
           <Button type="primary" style={{ background: "gray" }}>
-            <Link href="/dashboard/users/">Hủy</Link>
+            <Link href="/dashboard/admin/">Hủy</Link>
           </Button>
 
           <Button

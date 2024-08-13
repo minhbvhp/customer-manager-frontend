@@ -3,6 +3,7 @@ import {
   LoginPayload,
   NewCustomer,
   NewUser,
+  ResetUserPassword,
   UpdateCustomer,
   UpdateUser,
 } from "@/app/lib/definitions";
@@ -217,6 +218,32 @@ export async function deleteUser(id: string) {
     return {
       statusCode: 500,
       message: "Có lỗi xảy ra. Không thể xóa người dùng",
+    };
+  }
+}
+
+export async function resetUserPassword(
+  id: string,
+  newPassword: ResetUserPassword
+) {
+  try {
+    const accessToken = cookies().get("accessToken");
+    const url = process.env.BACKEND_URL + `/users/reset/${id}`;
+    const res = await fetch(url, {
+      method: "PATCH",
+      body: JSON.stringify(newPassword),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken?.value}`,
+      },
+    });
+
+    revalidatePath("/dashboard/admin");
+    return res.json();
+  } catch {
+    return {
+      statusCode: 500,
+      message: "Có lỗi xảy ra. Không thể reset mật khẩu người dùng",
     };
   }
 }
