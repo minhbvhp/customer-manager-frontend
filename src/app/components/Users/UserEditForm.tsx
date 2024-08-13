@@ -7,7 +7,6 @@ import { UpdateUser, User } from "@/app/lib/definitions";
 import { deleteUser, updateUser } from "@/app/lib/actions";
 
 export default function EditUserForm({ user }: { user: User }) {
-  console.log(user);
   //#region hook
   const [form] = Form.useForm();
   const [isFormSubmitting, setIsFormSubmitting] = useState(false);
@@ -32,7 +31,6 @@ export default function EditUserForm({ user }: { user: User }) {
 
     const updatingUser: UpdateUser = {
       name: values.name,
-      roleId: user.roleId,
     };
 
     const result = await updateUser(user.id, updatingUser);
@@ -63,18 +61,18 @@ export default function EditUserForm({ user }: { user: User }) {
   const handleDeleteOk = async () => {
     setIsFormSubmitting(true);
 
-    // const result = await deleteuser(user.id);
+    const result = await deleteUser(user.id);
 
     setIsFormSubmitting(false);
 
-    // if (result.statusCode) {
-    //   message.error(
-    //     Array.isArray(result.message) ? result.message[0] : result.message
-    //   );
-    // } else {
-    //   message.success(result.message);
-    //   router.push("/dashboard/users");
-    // }
+    if (result.statusCode) {
+      message.error(
+        Array.isArray(result.message) ? result.message[0] : result.message
+      );
+    } else {
+      message.success(result.message);
+      router.push("/dashboard/admin");
+    }
   };
   //#endregion
 
