@@ -167,10 +167,7 @@ export default function CustomerTable({
       dataIndex: "fullName",
       ...getColumnSearchProps("fullName"),
       render: (_: any, record: CustomerDataType) => (
-        <Link
-          href={`/dashboard/customers/${record.customerId}`}
-          prefetch={false}
-        >
+        <Link href={`/dashboard/customers/${record.customerId}`}>
           {record.fullName}
         </Link>
       ),

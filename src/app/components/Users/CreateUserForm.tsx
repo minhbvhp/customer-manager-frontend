@@ -79,9 +79,11 @@ export default function CreateUserForm() {
             Tạo
           </Button>
 
-          <Button type="primary" style={{ background: "gray" }}>
-            <Link href="/dashboard/admin/">Hủy</Link>
-          </Button>
+          <Link href="/dashboard/admin/">
+            <Button type="primary" style={{ background: "gray" }}>
+              Hủy
+            </Button>
+          </Link>
         </Space>
       </Form.Item>
     </Form>

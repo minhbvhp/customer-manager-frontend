@@ -259,11 +259,11 @@ export default function CreateCustomerForm({
                     Tạo
                   </Button>
 
-                  <Button type="primary" style={{ background: "gray" }}>
-                    <Link href="/dashboard/customers/" prefetch={false}>
+                  <Link href="/dashboard/customers/">
+                    <Button type="primary" style={{ background: "gray" }}>
                       Hủy
-                    </Link>
-                  </Button>
+                    </Button>
+                  </Link>
                 </Space>
               </Form.Item>
             </Col>

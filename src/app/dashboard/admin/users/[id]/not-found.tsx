@@ -9,9 +9,9 @@ export default function NotFound() {
         title="Lỗi 404"
         subTitle="Không thể tìm thấy người dùng này"
         extra={
-          <Button type="primary">
-            <Link href="/dashboard/admin">Quay lại</Link>
-          </Button>
+          <Link href="/dashboard/admin/">
+            <Button type="primary">Quay lại</Button>
+          </Link>
         }
       />
     </main>

@@ -350,11 +350,11 @@ export default function EditCustomerForm({
                     Cập nhật
                   </Button>
 
-                  <Button type="primary" style={{ background: "gray" }}>
-                    <Link href="/dashboard/customers/" prefetch={false}>
+                  <Link href="/dashboard/customers/">
+                    <Button type="primary" style={{ background: "gray" }}>
                       Hủy
-                    </Link>
-                  </Button>
+                    </Button>
+                  </Link>
 
                   <Button
                     type="primary"

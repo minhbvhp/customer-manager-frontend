@@ -107,9 +107,11 @@ export default function EditUserForm({ user }: { user: User }) {
             Cập nhật
           </Button>
 
-          <Button type="primary" style={{ background: "gray" }}>
-            <Link href="/dashboard/admin/">Hủy</Link>
-          </Button>
+          <Link href="/dashboard/admin/">
+            <Button type="primary" style={{ background: "gray" }}>
+              Hủy
+            </Button>
+          </Link>
 
           <Button
             type="primary"
