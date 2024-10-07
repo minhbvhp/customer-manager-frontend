@@ -37,7 +37,6 @@ export default function ReportForm({
 
   const onFinish = async (values: any) => {
     setIsFormSubmitting(true);
-
     setIsFormSubmitting(false);
 
     // if (result.statusCode) {
