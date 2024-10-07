@@ -12,12 +12,6 @@ import {
   Row,
   Divider,
 } from "antd";
-import { NewCustomer } from "@/app/lib/definitions";
-import { createSchemaFieldRule } from "antd-zod";
-import { CreateCustomerFormSchema } from "@/app/lib/validations";
-import { createCustomer } from "@/app/lib/actions";
-import { useRouter } from "next/navigation";
-import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 
 export default function ReportForm({
   provinces,
@@ -27,16 +21,8 @@ export default function ReportForm({
   customers: any[];
 }) {
   const [form] = Form.useForm();
-  const [districtOptions, setDistrictOptions] = useState([]);
-  const [wardOptions, setWardOptions] = useState([]);
-  const [wardCode, setWardCode] = useState("");
   const [isProvincesLoading, setIsProvincesLoading] = useState(false);
   const [isFormSubmitting, setIsFormSubmitting] = useState(false);
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!provinces) setIsProvincesLoading(true);
-  }, [provinces]);
 
   const filterOption = (
     input: string,
@@ -51,19 +37,6 @@ export default function ReportForm({
 
   const onFinish = async (values: any) => {
     setIsFormSubmitting(true);
-
-    console.log(customers);
-
-    // const newCustomer: NewCustomer = {
-    //   fullName: values.fullName,
-    //   taxCode: values.taxCode,
-    //   urn: values.urn,
-    //   street: values.street,
-    //   contacts: values.contacts,
-    //   wardCode,
-    // };
-
-    // const result = await createCustomer(newCustomer);
 
     setIsFormSubmitting(false);
 
