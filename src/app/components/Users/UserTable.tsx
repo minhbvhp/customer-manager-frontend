@@ -67,7 +67,7 @@ export default function UserTable({ users }: { users: User[] }) {
     <>
       <Table
         loading={isLoading}
-        pagination={{ pageSize: 8 }}
+        pagination={{ pageSize: 8, locale: { items_per_page: " / trang" } }}
         locale={{
           emptyText: "Không tìm thấy người dùng",
         }}

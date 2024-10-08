@@ -67,15 +67,6 @@ export default function ReportForm({
     }
 
     setIsFormSubmitting(false);
-
-    // if (result.statusCode) {
-    //   message.error(
-    //     Array.isArray(result.message) ? result.message[0] : result.message
-    //   );
-    // } else {
-    //   message.success(result.message);
-    //   router.push("/dashboard/customers");
-    // }
   };
 
   return (

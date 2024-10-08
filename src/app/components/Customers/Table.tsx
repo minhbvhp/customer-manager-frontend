@@ -234,7 +234,7 @@ export default function CustomerTable({
     <>
       <Table
         loading={isLoading}
-        pagination={{ pageSize: 5 }}
+        pagination={{ pageSize: 10, locale: { items_per_page: " / trang" } }}
         locale={{
           emptyText: "Không tìm thấy khách hàng",
           filterReset: "Xóa",
