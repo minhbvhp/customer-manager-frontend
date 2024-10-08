@@ -104,42 +104,46 @@ export default function CustomerReportTable({
       align: "center",
     });
 
+    let count = 0;
+
     customerOnReport.forEach((customer) => {
-      if (startY >= pageHeight - pageMargin) {
+      if (startY >= pageHeight - pageMargin - 20) {
         doc.addPage();
         startY = pageMargin; // Restart height position
       }
 
-      doc.setFont("timesbd");
-      doc.text(`${customer.fullName}`, startX, startY, {
-        maxWidth: pageWidth - pageMargin,
-      });
+      count++;
+
+      doc
+        .setFont("timesbd", "bold")
+        .text(`${count}. ${customer.fullName}`, startX, startY, {
+          maxWidth: pageWidth - pageMargin - 10,
+        });
       startY += 30;
 
-      doc.setFont("times");
-      doc.text(
-        `${customer.street}, ${customer.ward.fullName}, ${customer.ward.district.fullName}, ${customer.ward.district.province.fullName}`,
-        startX,
-        startY,
-        { maxWidth: pageWidth - pageMargin }
-      );
-      startY += 30;
+      doc
+        .setFont("times", "normal")
+        .text(
+          customer.street
+            ? `${customer.street}, ${customer.ward.name}, ${customer.ward.district.name}, ${customer.ward.district.province.name}`
+            : `${customer.ward.name}, ${customer.ward.district.name}, ${customer.ward.district.province.name}`,
+          startX,
+          startY,
+          { maxWidth: pageWidth - pageMargin - 10, lineHeightFactor: 1 }
+        );
+      startY += 40;
 
-      doc.setFont("timesi");
-      doc.text(`${customer.taxCode}`, startX, startY, {
-        maxWidth: pageWidth - pageMargin,
+      customer.contacts.forEach((contact) => {
+        doc
+          .setFont("timesi", "normal")
+          .text(`${contact.name} - ${contact.phone}`, startX, startY, {
+            maxWidth: pageWidth - pageMargin - 10,
+          });
+
+        startY += 30;
       });
 
-      var nextPosX = startX;
-
-      if (nextPosX > pageWidth) {
-        startX = pageMargin;
-        startY += 50;
-      } else {
-        startX = nextPosX;
-      }
-
-      startY += 50;
+      // startY += 50;
     });
 
     doc.save("Khach hang.pdf");
