@@ -12,6 +12,8 @@ import {
   Row,
   Divider,
 } from "antd";
+import { Customer } from "@/app/lib/definitions";
+import CustomerReportTable from "@/app/components/Report/CustomerReportTable";
 
 export default function ReportForm({
   provinces,
@@ -23,6 +25,19 @@ export default function ReportForm({
   const [form] = Form.useForm();
   const [isProvincesLoading, setIsProvincesLoading] = useState(false);
   const [isFormSubmitting, setIsFormSubmitting] = useState(false);
+  const [allFilter, setAllFilter] = useState([
+    { label: "Tất cả", value: "all" },
+  ]);
+  const [filteredCustomer, setFilteredCustomer] = useState([] as Customer[]);
+
+  useEffect(() => {
+    if (!provinces) {
+      setIsProvincesLoading(true);
+    } else {
+      const _allFilter = allFilter.concat(provinceOptions);
+      setAllFilter(_allFilter);
+    }
+  }, [provinces]);
 
   const filterOption = (
     input: string,
@@ -37,6 +52,20 @@ export default function ReportForm({
 
   const onFinish = async (values: any) => {
     setIsFormSubmitting(true);
+
+    const { province } = values;
+
+    if (province) {
+      if (province === "all") {
+        setFilteredCustomer(customers);
+      } else {
+        const _filteredCustomer = customers?.filter(
+          (customer) => customer.ward.district.province.name === province
+        );
+        setFilteredCustomer(_filteredCustomer);
+      }
+    }
+
     setIsFormSubmitting(false);
 
     // if (result.statusCode) {
@@ -50,47 +79,45 @@ export default function ReportForm({
   };
 
   return (
-    <Form
-      autoCorrect="off"
-      autoComplete="off"
-      wrapperCol={{ span: 8 }}
-      form={form}
-      onFinish={onFinish}
-    >
-      <Form.Item label="Theo Tỉnh/TP" required>
-        <Form.Item name="province" noStyle>
-          <Select
-            loading={isProvincesLoading}
-            notFoundContent="Không tìm thấy"
-            showSearch
-            placeholder="- Chọn -"
-            optionFilterProp="children"
-            filterOption={filterOption}
-            options={provinceOptions}
-          />
-        </Form.Item>
-      </Form.Item>
-
-      <Row>
-        <Divider />
-        <Col span={24} lg={{ span: 12 }}>
-          <Form.Item
-            label=" "
-            labelCol={{ xs: { span: 0 }, lg: { span: 7 } }}
-            colon={false}
-          >
-            <Space size={"middle"}>
-              <Button
-                type="primary"
-                htmlType="submit"
-                loading={isFormSubmitting}
-              >
-                Tạo
-              </Button>
-            </Space>
+    <>
+      <Form
+        autoCorrect="off"
+        autoComplete="off"
+        form={form}
+        onFinish={onFinish}
+        layout="inline"
+      >
+        <Form.Item label="Theo Tỉnh/TP" required>
+          <Form.Item name="province" noStyle>
+            <Select
+              loading={isProvincesLoading}
+              notFoundContent="Không tìm thấy"
+              showSearch
+              placeholder="- Chọn -"
+              optionFilterProp="children"
+              filterOption={filterOption}
+              options={allFilter}
+              style={{ width: 150 }}
+            />
           </Form.Item>
-        </Col>
-      </Row>
-    </Form>
+        </Form.Item>
+
+        <Form.Item>
+          <Button type="primary" htmlType="submit" loading={isFormSubmitting}>
+            Lọc
+          </Button>
+        </Form.Item>
+      </Form>
+
+      <Divider />
+
+      {filteredCustomer ? (
+        <>
+          <CustomerReportTable customers={filteredCustomer} />
+        </>
+      ) : (
+        <p>Chọn phương thức</p>
+      )}
+    </>
   );
 }

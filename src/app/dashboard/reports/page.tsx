@@ -30,10 +30,6 @@ export default async function ReportPage() {
           <Divider style={{ margin: 0 }} />
 
           <ReportForm provinces={provinces} customers={customers} />
-
-          {/* {customers.map((customer: Customer, index: any) => {
-            return <p>{customer.fullName}</p>;
-          })} */}
         </Flex>
       </AntdRegistry>
     </main>
