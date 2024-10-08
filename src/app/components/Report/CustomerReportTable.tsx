@@ -4,6 +4,8 @@ import { Button, Divider, Table, theme } from "antd";
 import { useEffect, useState } from "react";
 import type { TableColumnsType } from "antd";
 import { MinusCircleOutlined } from "@ant-design/icons";
+import jsPDF from "jspdf";
+import { FONTS } from "@/app/lib/fonts";
 
 export default function CustomerReportTable({
   customers,
@@ -80,7 +82,67 @@ export default function CustomerReportTable({
   };
 
   function exportToPDF(): void {
-    console.log(customerOnReport);
+    const doc = new jsPDF("p", "pt", "a4");
+
+    const pageHeight = 842;
+    const pageWidth = 595;
+    const pageMargin = 50;
+
+    let startX = pageMargin;
+    let startY = pageMargin + 50;
+
+    doc.addFileToVFS("times-normal.ttf", FONTS.TIMES_FONT_NORMAL);
+    doc.addFont("times-normal.ttf", "times", "normal");
+
+    doc.addFileToVFS("timesbd-bold.ttf", FONTS.TIMES_FONT_BOLD);
+    doc.addFont("timesbd-bold.ttf", "timesbd", "bold");
+
+    doc.addFileToVFS("timesi-normal.ttf", FONTS.TIMES_FONT_ITALIC);
+    doc.addFont("timesi-normal.ttf", "timesi", "normal");
+
+    doc.text("DANH SÁCH KHÁCH HÀNG", pageWidth / 2, pageMargin, {
+      align: "center",
+    });
+
+    customerOnReport.forEach((customer) => {
+      if (startY >= pageHeight - pageMargin) {
+        doc.addPage();
+        startY = pageMargin; // Restart height position
+      }
+
+      doc.setFont("timesbd");
+      doc.text(`${customer.fullName}`, startX, startY, {
+        maxWidth: pageWidth - pageMargin,
+      });
+      startY += 30;
+
+      doc.setFont("times");
+      doc.text(
+        `${customer.street}, ${customer.ward.fullName}, ${customer.ward.district.fullName}, ${customer.ward.district.province.fullName}`,
+        startX,
+        startY,
+        { maxWidth: pageWidth - pageMargin }
+      );
+      startY += 30;
+
+      doc.setFont("timesi");
+      doc.text(`${customer.taxCode}`, startX, startY, {
+        maxWidth: pageWidth - pageMargin,
+      });
+
+      var nextPosX = startX;
+
+      if (nextPosX > pageWidth) {
+        startX = pageMargin;
+        startY += 50;
+      } else {
+        startX = nextPosX;
+      }
+
+      startY += 50;
+    });
+
+    doc.save("Khach hang.pdf");
   }
 
   //#endregion
