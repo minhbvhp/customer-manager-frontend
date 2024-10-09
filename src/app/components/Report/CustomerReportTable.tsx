@@ -82,14 +82,7 @@ export default function CustomerReportTable({
   };
 
   function exportToPDF(): void {
-    const doc = new jsPDF("p", "pt", "a4");
-
-    const pageHeight = 842;
-    const pageWidth = 595;
-    const pageMargin = 50;
-
-    let startX = pageMargin;
-    let startY = pageMargin + 50;
+    let doc = new jsPDF();
 
     doc.addFileToVFS("times-normal.ttf", FONTS.TIMES_FONT_NORMAL);
     doc.addFont("times-normal.ttf", "times", "normal");
@@ -100,52 +93,80 @@ export default function CustomerReportTable({
     doc.addFileToVFS("timesi-normal.ttf", FONTS.TIMES_FONT_ITALIC);
     doc.addFont("timesi-normal.ttf", "timesi", "normal");
 
-    doc.text("DANH SÁCH KHÁCH HÀNG", pageWidth / 2, pageMargin, {
-      align: "center",
-    });
+    const pageWidth = 210;
+    const pageHeight = 297;
+    const pageMargin = 20;
+    const afterSpacing = 2;
+    const maxLengthPerLine = 160;
+
+    let yPos = pageMargin + 20;
+    let xPos = pageMargin;
+
+    doc
+      .setFont("timesbd", "bold")
+      .setFontSize(20)
+      .text("DANH SÁCH KHÁCH HÀNG", pageWidth / 2, pageMargin, {
+        align: "center",
+      });
 
     let count = 0;
-
     customerOnReport.forEach((customer) => {
-      if (startY >= pageHeight - pageMargin - 20) {
+      if (yPos >= pageHeight - pageMargin - 10) {
         doc.addPage();
-        startY = pageMargin; // Restart height position
+        yPos = pageMargin; // Restart height position
       }
 
       count++;
 
-      doc
-        .setFont("timesbd", "bold")
-        .text(`${count}. ${customer.fullName}`, startX, startY, {
-          maxWidth: pageWidth - pageMargin - 10,
-        });
-      startY += 30;
+      //Customer name
+      let text = `${count}. ${customer.fullName}`;
+      let splittedText = doc.splitTextToSize(text, maxLengthPerLine);
+      let lines = splittedText.length;
 
-      doc
-        .setFont("times", "normal")
-        .text(
-          customer.street
-            ? `${customer.street}, ${customer.ward.name}, ${customer.ward.district.name}, ${customer.ward.district.province.name}`
-            : `${customer.ward.name}, ${customer.ward.district.name}, ${customer.ward.district.province.name}`,
-          startX,
-          startY,
-          { maxWidth: pageWidth - pageMargin - 10, lineHeightFactor: 1 }
-        );
-      startY += 40;
+      let lineHeight =
+        doc
+          .setFont("timesbd", "bold")
+          .text(splittedText, xPos, yPos)
+          .getLineHeight() / doc.internal.scaleFactor;
+
+      let blockHeight = lines * lineHeight;
+      yPos += blockHeight + afterSpacing;
+
+      //Customer address
+      text = customer.street
+        ? `${customer.street}, ${customer.ward.name}, ${customer.ward.district.name}, ${customer.ward.district.province.name}`
+        : `${customer.ward.name}, ${customer.ward.district.name}, ${customer.ward.district.province.name}`;
+      splittedText = doc.splitTextToSize(text, maxLengthPerLine);
+      lines = splittedText.length;
+
+      lineHeight =
+        doc
+          .setFont("times", "normal")
+          .text(splittedText, xPos, yPos)
+          .getLineHeight() / doc.internal.scaleFactor;
+
+      blockHeight = lines * lineHeight;
+      yPos += blockHeight + afterSpacing;
+
+      //Customer contacts
 
       customer.contacts.forEach((contact) => {
-        doc
-          .setFont("timesi", "normal")
-          .text(`${contact.name} - ${contact.phone}`, startX, startY, {
-            maxWidth: pageWidth - pageMargin - 10,
-          });
+        text = `${contact.name} - ${contact.phone}`;
+        splittedText = doc.splitTextToSize(text, maxLengthPerLine);
+        lines = splittedText.length;
 
-        startY += 30;
+        lineHeight =
+          doc
+            .setFont("timesi", "normal")
+            .text(splittedText, xPos, yPos)
+            .getLineHeight() / doc.internal.scaleFactor;
+
+        blockHeight = lines * lineHeight;
+        yPos += blockHeight;
       });
 
-      // startY += 50;
+      yPos += 5;
     });
-
     doc.save("Khach hang.pdf");
   }
 
