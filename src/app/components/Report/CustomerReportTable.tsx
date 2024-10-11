@@ -45,6 +45,14 @@ export default function CustomerReportTable({
 
   const columns: TableColumnsType<CustomerDataType> = [
     {
+      title: "STT",
+      dataIndex: "key",
+      render: (id, record, index) => {
+        ++index;
+        return index;
+      },
+    },
+    {
       title: "Tên đầy đủ",
       dataIndex: "fullName",
     },
