@@ -57,11 +57,27 @@ export default function ReportForm({
 
     if (province) {
       if (province === "all") {
-        setFilteredCustomer(customers);
-      } else {
-        const _filteredCustomer = customers?.filter(
-          (customer) => customer.ward.district.province.name === province
+        const _sortedCustomers = customers?.sort(
+          (a, b) =>
+            a.ward.district.province.name.localeCompare(
+              b.ward.district.province.name
+            ) ||
+            a.ward.district.name.localeCompare(b.ward.district.name) ||
+            a.ward.name.localeCompare(b.ward.name)
         );
+
+        setFilteredCustomer(_sortedCustomers);
+      } else {
+        const _filteredCustomer = customers
+          ?.filter(
+            (customer) => customer.ward.district.province.name === province
+          )
+          .sort(
+            (a, b) =>
+              a.ward.district.name.localeCompare(b.ward.district.name) ||
+              a.ward.name.localeCompare(b.ward.name)
+          );
+
         setFilteredCustomer(_filteredCustomer);
       }
     }
