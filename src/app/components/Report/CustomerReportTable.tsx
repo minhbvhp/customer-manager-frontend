@@ -191,7 +191,7 @@ export default function CustomerReportTable({
 
           //Customer contacts
 
-          customer.contacts.forEach((contact) => {
+          customer?.contacts?.forEach((contact) => {
             text = `${contact.name} - ${contact.phone}`;
             splittedText = doc.splitTextToSize(text, maxLengthPerLine);
             lines = splittedText.length;
