@@ -1,23 +1,23 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import Link from "next/link";
+import { createCustomer } from "@/app/lib/actions";
+import { NewCustomer } from "@/app/lib/definitions";
+import { CreateCustomerFormSchema } from "@/app/lib/validations";
+import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import {
+  Button,
+  Col,
+  Divider,
   Form,
   Input,
+  Row,
   Select,
-  Button,
   Space,
   message,
-  Col,
-  Row,
-  Divider,
 } from "antd";
-import { NewCustomer } from "@/app/lib/definitions";
 import { createSchemaFieldRule } from "antd-zod";
-import { CreateCustomerFormSchema } from "@/app/lib/validations";
-import { createCustomer } from "@/app/lib/actions";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import { useEffect, useState } from "react";
 
 export default function CreateCustomerForm({
   provinces,
@@ -25,7 +25,6 @@ export default function CreateCustomerForm({
   provinces: any[];
 }) {
   const [form] = Form.useForm();
-  const [districtOptions, setDistrictOptions] = useState([]);
   const [wardOptions, setWardOptions] = useState([]);
   const [wardCode, setWardCode] = useState("");
   const [isProvincesLoading, setIsProvincesLoading] = useState(false);
@@ -44,7 +43,6 @@ export default function CreateCustomerForm({
   const provinceOptions = provinces.map((province: any) => ({
     value: province.name,
     label: province.name,
-    districts: province.districts,
   }));
 
   const onFinish = async (values: any) => {
@@ -74,17 +72,6 @@ export default function CreateCustomerForm({
   };
 
   const onSelectProvince = (value: any, option: any) => {
-    form.resetFields(["district", "ward"]);
-    const districts = option.districts;
-    const _districtOptions = districts.map((district: any) => ({
-      value: district.name,
-      label: district.name,
-      wards: district.wards,
-    }));
-    setDistrictOptions(_districtOptions);
-  };
-
-  const onSelectDistrict = (value: any, option: any) => {
     form.resetFields(["ward"]);
     const wards = option.wards;
     const _wardOptions = wards.map((ward: any) => ({
@@ -153,20 +140,6 @@ export default function CreateCustomerForm({
                     filterOption={filterOption}
                     onSelect={onSelectProvince}
                     options={provinceOptions}
-                  />
-                </Form.Item>
-              </Form.Item>
-
-              <Form.Item label="Quận/Huyện" required>
-                <Form.Item name="district" noStyle>
-                  <Select
-                    notFoundContent="Không tìm thấy"
-                    showSearch
-                    placeholder="- Chọn -"
-                    optionFilterProp="children"
-                    filterOption={filterOption}
-                    onSelect={onSelectDistrict}
-                    options={districtOptions}
                   />
                 </Form.Item>
               </Form.Item>

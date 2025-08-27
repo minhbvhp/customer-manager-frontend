@@ -1,24 +1,24 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import Link from "next/link";
+import { deleteCustomer, updateCustomer } from "@/app/lib/actions";
+import { Customer, UpdateCustomer } from "@/app/lib/definitions";
+import { UpdateCustomerFormSchema } from "@/app/lib/validations";
+import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import {
+  Button,
+  Col,
+  Divider,
   Form,
   Input,
+  Modal,
+  Row,
   Select,
-  Button,
   Space,
   message,
-  Divider,
-  Col,
-  Row,
-  Modal,
 } from "antd";
-import { Customer, UpdateCustomer } from "@/app/lib/definitions";
 import { createSchemaFieldRule } from "antd-zod";
-import { UpdateCustomerFormSchema } from "@/app/lib/validations";
-import { deleteCustomer, updateCustomer } from "@/app/lib/actions";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import { useEffect, useState } from "react";
 
 export default function EditCustomerForm({
   customer,
@@ -29,7 +29,6 @@ export default function EditCustomerForm({
 }) {
   //#region hook
   const [form] = Form.useForm();
-  const [districtOptions, setDistrictOptions] = useState([]);
   const [wardOptions, setWardOptions] = useState([]);
   const [wardCode, setWardCode] = useState("");
   const [isProvincesLoading, setIsProvincesLoading] = useState(false);
@@ -46,8 +45,7 @@ export default function EditCustomerForm({
     urn: customer.urn,
     street: customer.street,
     wardCode: customer.wardCode,
-    province: customer.ward?.district?.province?.name,
-    district: customer.ward?.district?.name,
+    province: customer.ward?.province?.name,
     ward: customer.ward?.name,
     contacts: customer.contacts,
   };
@@ -60,22 +58,10 @@ export default function EditCustomerForm({
     form.setFieldsValue(initialValues);
 
     const matchProvince = provinces.find(
-      (province: any) =>
-        province.name === customer.ward?.district?.province?.name
+      (province: any) => province.name === customer.ward?.province?.name
     );
 
-    const _districtOptions = matchProvince?.districts.map((district: any) => ({
-      value: district.name,
-      label: district.name,
-      wards: district.wards,
-    }));
-    setDistrictOptions(_districtOptions);
-
-    const matchDistrict = matchProvince?.districts.find(
-      (district: any) => district.name === customer.ward.district.name
-    );
-
-    const _wardOptions = matchDistrict?.wards.map((ward: any) => ({
+    const _wardOptions = matchProvince?.wards.map((ward: any) => ({
       value: ward.name,
       label: ward.name,
       wardCode: ward.code,
@@ -124,21 +110,10 @@ export default function EditCustomerForm({
   const provinceOptions = provinces.map((province: any) => ({
     value: province.name,
     label: province.name,
-    districts: province.districts,
+    wards: province.wards,
   }));
 
   const onSelectProvince = (value: any, option: any) => {
-    form.resetFields(["district", "ward"]);
-    const districts = option.districts;
-    const _districtOptions = districts.map((district: any) => ({
-      value: district.name,
-      label: district.name,
-      wards: district.wards,
-    }));
-    setDistrictOptions(_districtOptions);
-  };
-
-  const onSelectDistrict = (value: any, option: any) => {
     form.resetFields(["ward"]);
     const wards = option.wards;
     const _wardOptions = wards.map((ward: any) => ({
@@ -243,20 +218,6 @@ export default function EditCustomerForm({
                     filterOption={filterOption}
                     onSelect={onSelectProvince}
                     options={provinceOptions}
-                  />
-                </Form.Item>
-              </Form.Item>
-
-              <Form.Item label="Quận/Huyện" required>
-                <Form.Item name="district" noStyle>
-                  <Select
-                    notFoundContent="Không tìm thấy"
-                    showSearch
-                    placeholder="- Chọn -"
-                    optionFilterProp="children"
-                    filterOption={filterOption}
-                    onSelect={onSelectDistrict}
-                    options={districtOptions}
                   />
                 </Form.Item>
               </Form.Item>

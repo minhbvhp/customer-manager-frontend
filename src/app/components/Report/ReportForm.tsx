@@ -1,19 +1,8 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import Link from "next/link";
-import {
-  Form,
-  Input,
-  Select,
-  Button,
-  Space,
-  message,
-  Col,
-  Row,
-  Divider,
-} from "antd";
-import { Customer } from "@/app/lib/definitions";
 import CustomerReportTable from "@/app/components/Report/CustomerReportTable";
+import { Customer } from "@/app/lib/definitions";
+import { Button, Divider, Form, Select } from "antd";
+import { useEffect, useState } from "react";
 
 export default function ReportForm({
   provinces,
@@ -47,7 +36,6 @@ export default function ReportForm({
   const provinceOptions = provinces.map((province: any) => ({
     value: province.name,
     label: province.name,
-    districts: province.districts,
   }));
 
   const onFinish = async (values: any) => {
@@ -59,24 +47,15 @@ export default function ReportForm({
       if (province === "all") {
         const _sortedCustomers = customers?.sort(
           (a, b) =>
-            a.ward.district.province.name.localeCompare(
-              b.ward.district.province.name
-            ) ||
-            a.ward.district.name.localeCompare(b.ward.district.name) ||
+            a.ward.province.name.localeCompare(b.ward.province.name) ||
             a.ward.name.localeCompare(b.ward.name)
         );
 
         setFilteredCustomer(_sortedCustomers);
       } else {
         const _filteredCustomer = customers
-          ?.filter(
-            (customer) => customer.ward.district.province.name === province
-          )
-          .sort(
-            (a, b) =>
-              a.ward.district.name.localeCompare(b.ward.district.name) ||
-              a.ward.name.localeCompare(b.ward.name)
-          );
+          ?.filter((customer) => customer.ward.province.name === province)
+          .sort((a, b) => a.ward.name.localeCompare(b.ward.name));
 
         setFilteredCustomer(_filteredCustomer);
       }

@@ -37,8 +37,8 @@ export default function CustomerReportTable({
     fullName: customer.fullName,
     taxCode: customer.taxCode,
     address: customer.street
-      ? `${customer.street}, ${customer.ward.fullName}, ${customer.ward.district.fullName}, ${customer.ward.district.province.fullName}`
-      : `${customer.ward.fullName}, ${customer.ward.district.fullName}, ${customer.ward.district.province.fullName}`,
+      ? `${customer.street}, ${customer.ward.fullName}, ${customer.ward.province.fullName}`
+      : `${customer.ward.fullName}, ${customer.ward.province.fullName}`,
     contacts: customer.contacts,
     urn: customer.urn,
   }));
@@ -119,7 +119,7 @@ export default function CustomerReportTable({
 
     const groupByProvince = Object.groupBy(
       customerOnReport,
-      ({ ward }) => ward.district.province.name
+      ({ ward }) => ward.province.name
     );
 
     for (const [province, customers] of Object.entries(groupByProvince)) {
@@ -173,8 +173,8 @@ export default function CustomerReportTable({
 
           //Customer address
           text = customer.street
-            ? `${customer.street}, ${customer.ward.name}, ${customer.ward.district.name}, ${customer.ward.district.province.name}`
-            : `${customer.ward.name}, ${customer.ward.district.name}, ${customer.ward.district.province.name}`;
+            ? `${customer.street}, ${customer.ward.name}, ${customer.ward.province.name}`
+            : `${customer.ward.name}, ${customer.ward.province.name}`;
           splittedText = doc.splitTextToSize(text, maxLengthPerLine);
           lines = splittedText.length;
 

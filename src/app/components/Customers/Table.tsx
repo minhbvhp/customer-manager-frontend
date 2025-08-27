@@ -147,15 +147,15 @@ export default function CustomerTable({
     fullName: customer.fullName,
     taxCode: customer.taxCode,
     address: customer.street
-      ? `${customer.street}, ${customer.ward.fullName}, ${customer.ward.district.fullName}, ${customer.ward.district.province.fullName}`
-      : `${customer.ward.fullName}, ${customer.ward.district.fullName}, ${customer.ward.district.province.fullName}`,
+      ? `${customer.street}, ${customer.ward.fullName}, ${customer.ward.province.fullName}`
+      : `${customer.ward.fullName}, ${customer.ward.province.fullName}`,
     contacts: customer.contacts,
     urn: customer.urn,
   }));
 
   const arrayAddress = customers.map((customer: any) => ({
-    text: customer.ward.district.province.name,
-    value: customer.ward.district.province.name,
+    text: customer.ward.province.name,
+    value: customer.ward.province.name,
   }));
 
   const key = "value";
