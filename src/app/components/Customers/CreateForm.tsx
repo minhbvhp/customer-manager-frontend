@@ -43,6 +43,7 @@ export default function CreateCustomerForm({
   const provinceOptions = provinces.map((province: any) => ({
     value: province.name,
     label: province.name,
+    wards: province.wards,
   }));
 
   const onFinish = async (values: any) => {
