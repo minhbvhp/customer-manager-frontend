@@ -1,6 +1,6 @@
 "use client";
 import { Customer, CustomerDataType } from "@/app/lib/definitions";
-import { Button, Divider, Table, theme } from "antd";
+import { Button, Divider, Flex, Table, theme } from "antd";
 import { useEffect, useState } from "react";
 import type { TableColumnsType } from "antd";
 import { MinusCircleOutlined } from "@ant-design/icons";
@@ -218,17 +218,136 @@ export default function CustomerReportTable({
     doc.save("Khach hang.pdf");
   }
 
+  function exportToPDFWithoutContact(): void {
+    let doc = new jsPDF();
+
+    doc.addFileToVFS("times-normal.ttf", FONTS.TIMES_FONT_NORMAL);
+    doc.addFont("times-normal.ttf", "times", "normal");
+
+    doc.addFileToVFS("timesbd-bold.ttf", FONTS.TIMES_FONT_BOLD);
+    doc.addFont("timesbd-bold.ttf", "timesbd", "bold");
+
+    doc.addFileToVFS("timesi-normal.ttf", FONTS.TIMES_FONT_ITALIC);
+    doc.addFont("timesi-normal.ttf", "timesi", "normal");
+
+    const pageWidth = 210;
+    const pageHeight = 297;
+    const pageMargin = 20;
+    const afterSpacing = 1;
+    const maxLengthPerLine = 200;
+
+    let yPos = pageMargin + 20;
+    let xPos = pageMargin;
+
+    doc
+      .setFont("timesbd", "bold")
+      .setFontSize(28)
+      .text("DANH SÁCH KHÁCH HÀNG", pageWidth / 2, pageMargin, {
+        align: "center",
+      });
+
+    const groupByProvince = Object.groupBy(
+      customerOnReport,
+      ({ ward }) => ward.province.name
+    );
+
+    for (const [province, customers] of Object.entries(groupByProvince)) {
+      if (customers) {
+        //Group province
+        if (yPos >= pageHeight - pageMargin - 10) {
+          doc.addPage();
+          yPos = pageMargin; // Restart height position
+        }
+
+        let text = `* Khu vực: ${province}`;
+        let splittedText = doc.splitTextToSize(text, maxLengthPerLine);
+        let lines = splittedText.length;
+
+        let lineHeight =
+          doc
+            .setFont("timesbd", "bold")
+            .setFontSize(20)
+            .setTextColor("blue")
+            .text(splittedText, xPos, yPos)
+            .getLineHeight() / doc.internal.scaleFactor;
+
+        let blockHeight = lines * lineHeight;
+        yPos += blockHeight + afterSpacing;
+
+        let count = 0;
+        //Customer
+        customers.forEach((customer) => {
+          if (yPos >= pageHeight - pageMargin - 10) {
+            doc.addPage();
+            yPos = pageMargin; // Restart height position
+          }
+
+          count++;
+
+          //Customer name
+          let text = `${count}. ${customer.fullName}`;
+          let splittedText = doc.splitTextToSize(text, maxLengthPerLine);
+          let lines = splittedText.length;
+
+          let lineHeight =
+            doc
+              .setFont("timesbd", "bold")
+              .setFontSize(16)
+              .setTextColor("black")
+              .text(splittedText, xPos, yPos)
+              .getLineHeight() / doc.internal.scaleFactor;
+
+          let blockHeight = lines * lineHeight;
+          yPos += blockHeight + afterSpacing;
+
+          //Customer address
+          text = customer.street
+            ? `${customer.street}, ${customer.ward.name}, ${customer.ward.province.name}`
+            : `${customer.ward.name}, ${customer.ward.province.name}`;
+          splittedText = doc.splitTextToSize(text, maxLengthPerLine);
+          lines = splittedText.length;
+
+          lineHeight =
+            doc
+              .setFont("times", "normal")
+              .setFontSize(14)
+              .setTextColor("black")
+              .text(splittedText, xPos, yPos)
+              .getLineHeight() / doc.internal.scaleFactor;
+
+          blockHeight = lines * lineHeight;
+          yPos += blockHeight + afterSpacing;
+
+          yPos += 5;
+        });
+
+        yPos += 5;
+      }
+    }
+
+    doc.save("Khach hang.pdf");
+  }
   //#endregion
 
   return (
     <>
-      <Button
-        type="primary"
-        onClick={() => exportToPDF()}
-        style={{ width: 150 }}
-      >
-        Xuất báo cáo
-      </Button>
+      <Flex justify="flex-start" gap={10}>
+        <Button
+          type="primary"
+          onClick={() => exportToPDF()}
+          style={{ width: 150 }}
+        >
+          Xuất báo cáo
+        </Button>
+
+        <Button
+          type="primary"
+          onClick={() => exportToPDFWithoutContact()}
+          // style={{ width: 150 }}
+        >
+          Xuất báo cáo (không có thông tin liên hệ)
+        </Button>
+      </Flex>
 
       <Table
         loading={isLoading}
